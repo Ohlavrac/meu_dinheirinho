@@ -38,4 +38,9 @@ class AppTexts {
     fontWeight: FontWeight.bold,
     fontSize: 16
   );
+  static final simple = GoogleFonts.kumbhSans(
+    color: AppColors.textBlack,
+    fontWeight: FontWeight.normal,
+    fontSize: 16
+  );
 }

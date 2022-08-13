@@ -7,13 +7,14 @@ class SquareCardButton extends StatelessWidget {
   final Icon icon;
   final Color color;
   final String label;
-  const SquareCardButton({Key? key, required this.icon, required this.color, required this.label}) : super(key: key);
+  final bool redOrGreen;
+  const SquareCardButton({Key? key, required this.icon, required this.color, required this.label, required this.redOrGreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, "/addWalletMoviment");
+        Navigator.pushNamed(context, "/addWalletMoviment", arguments: redOrGreen);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 28),

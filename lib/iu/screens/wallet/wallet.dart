@@ -28,7 +28,7 @@ class _WalletState extends State<Wallet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Minha Carteira", style: AppTexts.title,),
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                   height: 115,
@@ -61,8 +61,8 @@ class _WalletState extends State<Wallet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SquareCardButton(icon: const Icon(Icons.north_east, size: 50,), color: AppColors.primary, label: "Adicionar Lucro"),
-                    SquareCardButton(icon: const Icon(Icons.call_received, size: 50, color: Colors.red,), color: AppColors.textBlack, label: "Adicionar Gasto"),
+                    SquareCardButton(icon: const Icon(Icons.north_east, size: 50,), color: AppColors.primary, label: "Adicionar Lucro", redOrGreen: true,),
+                    SquareCardButton(icon: const Icon(Icons.call_received, size: 50, color: Colors.red,), color: AppColors.textBlack, label: "Adicionar Gasto", redOrGreen: false,),
                   ],
                 ),
                 const SizedBox(height: 20,),

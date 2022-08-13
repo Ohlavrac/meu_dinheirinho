@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
+import 'package:meu_dinheirinho/iu/screens/calendar/calendar.dart';
+import 'package:meu_dinheirinho/iu/screens/history/history.dart';
+import 'package:meu_dinheirinho/iu/screens/settings/settings.dart';
 import 'package:meu_dinheirinho/iu/screens/wallet/wallet.dart';
 
 class ScreenBase extends StatefulWidget {
@@ -14,9 +17,9 @@ class _ScreenBaseState extends State<ScreenBase> {
   int _selectedIndex = 0;
   static const  List<Widget> _screensList = [
     Wallet(),
-    Wallet(),
-    Wallet(),
-    Wallet(),
+    Calendar(),
+    History(),
+    Settings(),
   ];
 
   void _onTapItem(int index) {
