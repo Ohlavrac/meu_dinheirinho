@@ -23,6 +23,11 @@ class AppTexts {
     fontWeight: FontWeight.normal,
     fontSize: 13
   );
+  static final pageDescription = GoogleFonts.kumbhSans(
+    color: AppColors.textBlack,
+    fontWeight: FontWeight.bold,
+    fontSize: 14
+  );
   static final normal = GoogleFonts.kumbhSans(
     color: AppColors.textBlack,
     fontWeight: FontWeight.bold,

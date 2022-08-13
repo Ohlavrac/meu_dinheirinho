@@ -11,28 +11,33 @@ class SquareCardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 28),
-      height: 115,
-      //width: 180,
-      decoration: BoxDecoration(
-        color: color,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 4,
-            blurRadius: 7,
-            offset: const Offset(3, 2)
-          )
-        ]
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          icon,
-          //Icon(Icons.call_received),
-          Text(label, style: label == "Adicionar Gasto" ? AppTexts.normal2 : AppTexts.normal)
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, "/addWalletMoviment");
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 28),
+        height: 115,
+        //width: 180,
+        decoration: BoxDecoration(
+          color: color,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 4,
+              blurRadius: 7,
+              offset: const Offset(3, 2)
+            )
+          ]
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            icon,
+            //Icon(Icons.call_received),
+            Text(label, style: label == "Adicionar Gasto" ? AppTexts.normal2 : AppTexts.normal)
+          ],
+        ),
       ),
     );
   }

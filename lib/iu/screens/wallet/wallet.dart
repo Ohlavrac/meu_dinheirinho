@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:meu_dinheirinho/data/data_source/data_source_base_category.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
 import 'package:meu_dinheirinho/iu/widgets/square_card_button.dart';
@@ -13,6 +14,7 @@ class Wallet extends StatefulWidget {
 
 class _WalletState extends State<Wallet> {
   DateTime _date = DateTime.now();
+  DataSourceBaseCategory baseCategoryData = DataSourceBaseCategory();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,8 @@ class _WalletState extends State<Wallet> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Minhas Carteira", style: AppTexts.title,),
+                Text("Minha Carteira", style: AppTexts.title,),
+                SizedBox(height: 10,),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                   height: 115,
@@ -72,16 +75,17 @@ class _WalletState extends State<Wallet> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: 10,
+                    itemCount: baseCategoryData.getAll().length,
                     itemBuilder: (context, index) {
+                      var apagar = baseCategoryData.getAll();
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Card(
                           child: ListTile(
                             tileColor: AppColors.primary,
-                            leading: Icon(Icons.play_circle, size: 45,),
-                            title: Text("Netflix"),
-                            subtitle: Text("Streaming"),
+                            leading: apagar[index].icon,
+                            title: Text("Gasto"),
+                            subtitle: Text("${apagar[index].name}"),
                             trailing: Text("- 56.60 R\$"),
                           ),
                         ),
