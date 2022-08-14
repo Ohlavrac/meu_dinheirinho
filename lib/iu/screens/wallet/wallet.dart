@@ -81,6 +81,7 @@ class _WalletState extends State<Wallet> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Card(
+                          elevation: 5,
                           child: ListTile(
                             tileColor: AppColors.primary,
                             leading: apagar[index].icon,

@@ -8,6 +8,16 @@ class AppTexts {
     fontWeight: FontWeight.bold,
     fontSize: 20
   );
+  static final titleGreen = GoogleFonts.kumbhSans(
+    color: Colors.green,
+    fontWeight: FontWeight.bold,
+    fontSize: 20
+  );
+  static final titleRed = GoogleFonts.kumbhSans(
+    color: Colors.red,
+    fontWeight: FontWeight.bold,
+    fontSize: 20
+  );
   static final subtitle = GoogleFonts.kumbhSans(
     color: AppColors.textWhite,
     fontWeight: FontWeight.w500,

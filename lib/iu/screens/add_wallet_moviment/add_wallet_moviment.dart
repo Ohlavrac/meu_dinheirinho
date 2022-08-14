@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/widgets/large_text_field.dart';
 
@@ -16,7 +17,13 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
   String? _selectedItem;
   static DateTime now = DateTime.now();
   DateTime lastDateOfMonth = DateTime(now.year, now.month + 1, 0);
+  DateTime? date;
   bool _repeat = false;
+  int mounths = 0;
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  String title = "";
+  String? price = "";
 
   @override
   DataSourceBaseCategory baseCategoryData = DataSourceBaseCategory();
@@ -34,11 +41,20 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(isLucro == true ? "Adicionar Lucro" : "Adicionar Gasto", style: AppTexts.title,),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(text: isLucro == true ? "Adicionar " : "Adicionar ", style: AppTexts.title,),
+                      isLucro == true ? TextSpan(text:  "Lucro", style: AppTexts.titleGreen,) :  TextSpan(text: "Gasto", style: AppTexts.titleRed,)
+                    ],
+                  ),
+                ),
                 Text(isLucro == true ? "Preencha os campos abaixo para salavar o valor do seu lucro na sua carteira.":"Preencha os campos abaixo para remover a quantia da sua carteira", style: AppTexts.pageDescription,),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: LargeTextField(label: "Titulo", isNumberInput: false, width: double.infinity,)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: LargeTextField(label: "Titulo", isNumberInput: false, width: double.infinity, onChanged: (String value) {
+                    title = value;
+                  },)
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,7 +87,9 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
                         ),
                       ),
                     ),
-                    const LargeTextField(label: "Valor", isNumberInput: true, width: 178)
+                    LargeTextField(label: "Valor", isNumberInput: true, width: 178, onChanged: (String value) {
+                      price = value;
+                    },)
                   ],
                 ),
                 const SizedBox(height: 15,),
@@ -88,14 +106,17 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
                           ),
                         ),
                         onPressed: () async {
-                          showDatePicker(
+                          DateTime? newDate = await showDatePicker(
                             firstDate: now,
                             initialDate: now,
                             lastDate: lastDateOfMonth, context: context,
                           );
+                          setState(() {
+                            newDate == null ? date = null : date = newDate;
+                          });
                         }, child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 18),
-                          child: Text("Data", style: AppTexts.normal2,),
+                          child: Text(date == null ? "Data" : DateFormat("d 'de' MMMM 'de' y").format(date!), style: AppTexts.normal2,),
                         ),
                       ),
                     ),
@@ -117,9 +138,36 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
                   ],
                 ),
                 _repeat == true ?
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: LargeTextField(label: "Quantos meses ?", isNumberInput: true, width: double.infinity,)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: SizedBox(
+                    width: 178,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      style: AppTexts.simple,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelStyle: AppTexts.simple,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(0),
+                          borderSide: BorderSide(color: AppColors.textBlack, width: 1.5)
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(0),
+                          borderSide: BorderSide(color: AppColors.textBlack, width: 1.5)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(0),
+                          borderSide: BorderSide(color: AppColors.primary, width: 1.5)
+                        ),
+                        labelText: "Quantos Meses",
+                      ),
+                      onChanged: (value) {
+                        mounths = int.parse(value);
+                      },
+                    ),
+                  ),
                 ) :
                 const Text(""),
               ],
@@ -137,7 +185,7 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
             ),
           ),
           onPressed: () async {
-                  
+            print("Title: $title | Category: $_selectedItem | Price: $price | Date: $date | Repeat: $_repeat");
           }, child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text("Salvar", style: AppTexts.money,),
