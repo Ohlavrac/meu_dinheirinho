@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:drift/drift.dart' hide Column;
 import 'package:intl/intl.dart';
+import 'package:meu_dinheirinho/data/db/database.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/widgets/large_text_field.dart';
+import 'package:meu_dinheirinho/iu/widgets/price_input.dart';
 
 import '../../../data/data_source/data_source_base_category.dart';
 import '../../texts/app_texts.dart';
@@ -87,7 +90,7 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
                         ),
                       ),
                     ),
-                    LargeTextField(label: "Valor", isNumberInput: true, width: 178, onChanged: (String value) {
+                    PriceInput(label: "Valor", isNumberInput: true, width: 178, onChanged: (String value) {
                       price = value;
                     },)
                   ],
@@ -185,7 +188,25 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
             ),
           ),
           onPressed: () async {
-            print("Title: $title | Category: $_selectedItem | Price: $price | Date: $date | Repeat: $_repeat");
+            var formatPriceString = price?.replaceRange(0, 2, "");
+            var formatPricestring2 = formatPriceString?.replaceAll(",", "");
+            var priceConverted = double.parse(formatPricestring2!);
+            final dao = Database();
+            print(priceConverted);
+            
+            print("Title: $title | Category: $_selectedItem | Price: $priceConverted | Date: $date | Repeat: $_repeat | $isLucro | $mounths");
+            
+            final movimentData = MovimentCompanion(
+              title: Value(title),
+              amount: Value(priceConverted),
+              createdAt: Value(date),
+              type: Value(isLucro!),
+              category: Value(_selectedItem!),
+              repeat: Value(_repeat),
+              repeatMoths: Value(mounths)
+            );
+            dao.addMoviment(movimentData);
+            Navigator.pop(context);
           }, child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text("Salvar", style: AppTexts.money,),

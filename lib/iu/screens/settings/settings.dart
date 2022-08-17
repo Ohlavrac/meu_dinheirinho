@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/db/database.dart';
+
 class Settings extends StatelessWidget {
   const Settings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("EM BREVE"),);
+    return SafeArea(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              final dao = Database();
+              dao.reset();
+            },
+            child: Text("RESET THAT SHIT"),
+          ),
+        ],
+      ),
+    );
   }
 }

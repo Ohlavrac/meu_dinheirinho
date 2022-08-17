@@ -53,4 +53,14 @@ class AppTexts {
     fontWeight: FontWeight.normal,
     fontSize: 16
   );
+  static final positive = GoogleFonts.kumbhSans(
+    color: AppColors.textBlack,
+    fontWeight: FontWeight.normal,
+    fontSize: 16
+  );
+  static final negative = GoogleFonts.kumbhSans(
+    color: Colors.red,
+    fontWeight: FontWeight.normal,
+    fontSize: 16
+  );
 }

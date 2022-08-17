@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/data_source/data_source_base_category.dart';
+import 'package:meu_dinheirinho/data/db/database.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
+import 'package:meu_dinheirinho/iu/widgets/history_card.dart';
 import 'package:meu_dinheirinho/iu/widgets/square_card_button.dart';
 
 class Wallet extends StatefulWidget {
@@ -15,9 +17,11 @@ class Wallet extends StatefulWidget {
 class _WalletState extends State<Wallet> {
   DateTime _date = DateTime.now();
   DataSourceBaseCategory baseCategoryData = DataSourceBaseCategory();
+  final oCcy = new NumberFormat("#,##0.00", "en_US");  
 
   @override
   Widget build(BuildContext context) {
+    Database db = Database();
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: Padding(
@@ -53,7 +57,22 @@ class _WalletState extends State<Wallet> {
                         padding: const EdgeInsets.only(bottom: 15),
                         child: Text(DateFormat("d 'de' MMMM 'de' y").format(_date), style: AppTexts.subtitle,),
                       ),
-                      Text("R\$ 1.236.00", style: AppTexts.money,)
+                      StreamBuilder(
+                        stream: db.getPositiveValues(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.active) {
+                            var positiveList = snapshot.data as List<MovimentData>;
+                            var total = 0.0;
+
+                            for(var c = 0; c < positiveList.length; c++) {
+                              total = total + positiveList[c].amount;
+                            }
+                        
+                            return Text("R\$ ${(total)}", style: AppTexts.money,);
+                          }
+                          return const Center(child: Text("..."),);
+                        }
+                      )
                     ],
                   ),
                 ),
@@ -66,7 +85,21 @@ class _WalletState extends State<Wallet> {
                   ],
                 ),
                 const SizedBox(height: 20,),
-                Text("Historico de Movimentação", style: AppTexts.title,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Historico de Movimentação", style: AppTexts.title,),
+                    IconButton(
+                      iconSize: 18,
+                      icon: const Icon(Icons.refresh),
+                      onPressed: () {
+                        setState(() {
+                          
+                        });
+                      },
+                    )
+                  ],
+                ),
                 Divider(
                   color: AppColors.textBlack,
                   indent: 1,
@@ -74,24 +107,27 @@ class _WalletState extends State<Wallet> {
                   thickness: 2,
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: baseCategoryData.getAll().length,
-                    itemBuilder: (context, index) {
-                      var apagar = baseCategoryData.getAll();
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Card(
-                          elevation: 5,
-                          child: ListTile(
-                            tileColor: AppColors.primary,
-                            leading: apagar[index].icon,
-                            title: Text("Gasto"),
-                            subtitle: Text("${apagar[index].name}"),
-                            trailing: Text("- 56.60 R\$"),
-                          ),
-                        ),
-                      );
-                    },
+                  child: StreamBuilder<List<MovimentData>>(
+                    stream: db.getMoviments(),
+                    builder: (context, AsyncSnapshot<List<MovimentData>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active) {
+                        var items = snapshot.data as List<MovimentData>;
+                        return ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            var item = items[index];
+                            var icon = baseCategoryData.getKey(items[index].category);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: HistoryCard(icon: icon, item: item,)
+                            );
+                          },
+                        );
+                      } else if (snapshot.hasData) {
+                        return const Center(child: Text("ERROR"));
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    }, 
                   ),
                 ),
               ],

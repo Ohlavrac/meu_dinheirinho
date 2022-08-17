@@ -20,4 +20,16 @@ class DataSourceBaseCategory extends DataSourceLocal<BaseCategoryModel> {
     print("AQUI $baseCategoryKey");
     return baseCategoryKey;
   }
+  
+  @override
+  BaseCategoryModel getKey(String nameKey) {
+    var base = getAll();
+
+    for (var c = 0; c < base.length; c++) {
+      if (base[c].name == nameKey) {
+        return base[c];
+      }
+    }
+    return base.last;
+  }
 }

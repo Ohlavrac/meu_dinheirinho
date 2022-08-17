@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import '../colors/app_colors.dart';
 import '../texts/app_texts.dart';
 
-class LargeTextField extends StatelessWidget {
+class PriceInput extends StatelessWidget {
   final String label;
   final bool isNumberInput;
   final double width;
   final void Function(String value)? onChanged;
 
-  const LargeTextField({Key? key, required this.label, required this.isNumberInput, required this.width, required this.onChanged}) : super(key: key);
+  const PriceInput({Key? key, required this.label, required this.isNumberInput, required this.width, required this.onChanged}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +18,7 @@ class LargeTextField extends StatelessWidget {
       width: width,
       child: TextField(
         keyboardType: isNumberInput == true ? TextInputType.number : TextInputType.text,
+        inputFormatters: [CurrencyTextInputFormatter(decimalDigits: 0, symbol: "R\$",)],
         style: AppTexts.simple,
         decoration: InputDecoration(
           filled: true,
