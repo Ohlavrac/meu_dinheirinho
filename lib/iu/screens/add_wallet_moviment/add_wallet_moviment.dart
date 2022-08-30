@@ -203,8 +203,12 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
               type: Value(isLucro!),
               category: Value(_selectedItem!),
               repeat: Value(_repeat),
-              repeatMoths: Value(mounths)
+              repeatMoths: Value(mounths),
+              monthYearString: Value(DateFormat("MMMM y").format(now)),
             );
+
+            // se o mes e ano não existe no db então fazer um novo
+            print(">>>> ${DateFormat("MMMM y").format(now)}");
             dao.addMoviment(movimentData);
             Navigator.pop(context);
           }, child: Padding(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/data_source/data_source_base_category.dart';
 import 'package:meu_dinheirinho/data/db/database.dart';
+import 'package:meu_dinheirinho/domain/use_case/wallet_amount/wallet_amount.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
 import 'package:meu_dinheirinho/iu/widgets/history_card.dart';
@@ -15,9 +16,11 @@ class Wallet extends StatefulWidget {
 }
 
 class _WalletState extends State<Wallet> {
-  DateTime _date = DateTime.now();
+  final DateTime _date = DateTime.now();
   DataSourceBaseCategory baseCategoryData = DataSourceBaseCategory();
-  final oCcy = new NumberFormat("#,##0.00", "en_US");  
+  final oCcy = NumberFormat("#,##0.00", "en_US");
+  String monthAndYear = DateFormat("MMMM y").format(DateTime.now());
+  WalletAmount walletAmount = WalletAmount();
 
   @override
   Widget build(BuildContext context) {
@@ -58,19 +61,21 @@ class _WalletState extends State<Wallet> {
                         child: Text(DateFormat("d 'de' MMMM 'de' y").format(_date), style: AppTexts.subtitle,),
                       ),
                       StreamBuilder(
-                        stream: db.getPositiveValues(),
+                        stream: db.getMovimentsByMonth(monthAndYear),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.active) {
-                            var positiveList = snapshot.data as List<MovimentData>;
-                            var total = 0.0;
+                            if (snapshot.hasData) {
+                              var amounts = snapshot.data as List<MovimentData>;
+                              
+                              var total = walletAmount.getWalletAmount(amounts);
 
-                            for(var c = 0; c < positiveList.length; c++) {
-                              total = total + positiveList[c].amount;
+                              return Text("R\$ $total", style: AppTexts.money,);
+                            } else {
+                              return const Center(child: Text("ERROR"),);
                             }
-                        
-                            return Text("R\$ ${(total)}", style: AppTexts.money,);
+                          } else {
+                            return const Center(child: CircularProgressIndicator());
                           }
-                          return const Center(child: Text("..."),);
                         }
                       )
                     ],
@@ -108,21 +113,25 @@ class _WalletState extends State<Wallet> {
                 ),
                 Expanded(
                   child: StreamBuilder<List<MovimentData>>(
-                    stream: db.getMoviments(),
+                    stream: db.getMovimentsByMonth(monthAndYear),
                     builder: (context, AsyncSnapshot<List<MovimentData>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.active) {
-                        var items = snapshot.data as List<MovimentData>;
-                        return ListView.builder(
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            var item = items[index];
-                            var icon = baseCategoryData.getKey(items[index].category);
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: HistoryCard(icon: icon, item: item,)
-                            );
-                          },
-                        );
+                        if (snapshot.hasData) {
+                          var items = snapshot.data as List<MovimentData>;
+                          return ListView.builder(
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              var item = items[index];
+                              var icon = baseCategoryData.getKey(items[index].category);
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                child: HistoryCard(icon: icon, item: item,)
+                              );
+                            },
+                          );
+                        } else {
+                          return const Center(child: Text("ERROR"));
+                        }
                       } else if (snapshot.hasData) {
                         return const Center(child: Text("ERROR"));
                       }
