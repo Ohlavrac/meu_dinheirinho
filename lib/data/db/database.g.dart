@@ -16,6 +16,7 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
   final String category;
   final bool repeat;
   final int repeatMoths;
+  final String? monthYearString;
   const MovimentData(
       {required this.id,
       required this.title,
@@ -24,7 +25,10 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
       required this.type,
       required this.category,
       required this.repeat,
-      required this.repeatMoths});
+      required this.repeatMoths,
+      this.monthYearString});
+
+  get content => null;
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -38,6 +42,9 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
     map['category'] = Variable<String>(category);
     map['repeat'] = Variable<bool>(repeat);
     map['repeat_moths'] = Variable<int>(repeatMoths);
+    if (!nullToAbsent || monthYearString != null) {
+      map['month_year_string'] = Variable<String>(monthYearString);
+    }
     return map;
   }
 
@@ -53,6 +60,9 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
       category: Value(category),
       repeat: Value(repeat),
       repeatMoths: Value(repeatMoths),
+      monthYearString: monthYearString == null && nullToAbsent
+          ? const Value.absent()
+          : Value(monthYearString),
     );
   }
 
@@ -68,6 +78,7 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
       category: serializer.fromJson<String>(json['category']),
       repeat: serializer.fromJson<bool>(json['repeat']),
       repeatMoths: serializer.fromJson<int>(json['repeatMoths']),
+      monthYearString: serializer.fromJson<String?>(json['monthYearString']),
     );
   }
   @override
@@ -82,6 +93,7 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
       'category': serializer.toJson<String>(category),
       'repeat': serializer.toJson<bool>(repeat),
       'repeatMoths': serializer.toJson<int>(repeatMoths),
+      'monthYearString': serializer.toJson<String?>(monthYearString),
     };
   }
 
@@ -93,7 +105,8 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
           bool? type,
           String? category,
           bool? repeat,
-          int? repeatMoths}) =>
+          int? repeatMoths,
+          Value<String?> monthYearString = const Value.absent()}) =>
       MovimentData(
         id: id ?? this.id,
         title: title ?? this.title,
@@ -103,6 +116,9 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
         category: category ?? this.category,
         repeat: repeat ?? this.repeat,
         repeatMoths: repeatMoths ?? this.repeatMoths,
+        monthYearString: monthYearString.present
+            ? monthYearString.value
+            : this.monthYearString,
       );
   @override
   String toString() {
@@ -114,14 +130,15 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
           ..write('type: $type, ')
           ..write('category: $category, ')
           ..write('repeat: $repeat, ')
-          ..write('repeatMoths: $repeatMoths')
+          ..write('repeatMoths: $repeatMoths, ')
+          ..write('monthYearString: $monthYearString')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, title, amount, createdAt, type, category, repeat, repeatMoths);
+  int get hashCode => Object.hash(id, title, amount, createdAt, type, category,
+      repeat, repeatMoths, monthYearString);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -133,7 +150,8 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
           other.type == this.type &&
           other.category == this.category &&
           other.repeat == this.repeat &&
-          other.repeatMoths == this.repeatMoths);
+          other.repeatMoths == this.repeatMoths &&
+          other.monthYearString == this.monthYearString);
 }
 
 class MovimentCompanion extends UpdateCompanion<MovimentData> {
@@ -145,6 +163,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
   final Value<String> category;
   final Value<bool> repeat;
   final Value<int> repeatMoths;
+  final Value<String?> monthYearString;
   const MovimentCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -154,6 +173,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
     this.category = const Value.absent(),
     this.repeat = const Value.absent(),
     this.repeatMoths = const Value.absent(),
+    this.monthYearString = const Value.absent(),
   });
   MovimentCompanion.insert({
     this.id = const Value.absent(),
@@ -164,6 +184,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
     required String category,
     required bool repeat,
     required int repeatMoths,
+    this.monthYearString = const Value.absent(),
   })  : title = Value(title),
         amount = Value(amount),
         type = Value(type),
@@ -179,6 +200,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
     Expression<String>? category,
     Expression<bool>? repeat,
     Expression<int>? repeatMoths,
+    Expression<String>? monthYearString,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -189,6 +211,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
       if (category != null) 'category': category,
       if (repeat != null) 'repeat': repeat,
       if (repeatMoths != null) 'repeat_moths': repeatMoths,
+      if (monthYearString != null) 'month_year_string': monthYearString,
     });
   }
 
@@ -200,7 +223,8 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
       Value<bool>? type,
       Value<String>? category,
       Value<bool>? repeat,
-      Value<int>? repeatMoths}) {
+      Value<int>? repeatMoths,
+      Value<String?>? monthYearString}) {
     return MovimentCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -210,6 +234,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
       category: category ?? this.category,
       repeat: repeat ?? this.repeat,
       repeatMoths: repeatMoths ?? this.repeatMoths,
+      monthYearString: monthYearString ?? this.monthYearString,
     );
   }
 
@@ -240,6 +265,9 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
     if (repeatMoths.present) {
       map['repeat_moths'] = Variable<int>(repeatMoths.value);
     }
+    if (monthYearString.present) {
+      map['month_year_string'] = Variable<String>(monthYearString.value);
+    }
     return map;
   }
 
@@ -253,7 +281,8 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
           ..write('type: $type, ')
           ..write('category: $category, ')
           ..write('repeat: $repeat, ')
-          ..write('repeatMoths: $repeatMoths')
+          ..write('repeatMoths: $repeatMoths, ')
+          ..write('monthYearString: $monthYearString')
           ..write(')'))
         .toString();
   }
@@ -315,9 +344,24 @@ class $MovimentTable extends Moviment
   late final GeneratedColumn<int> repeatMoths = GeneratedColumn<int>(
       'repeat_moths', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  final VerificationMeta _monthYearStringMeta =
+      const VerificationMeta('monthYearString');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, title, amount, createdAt, type, category, repeat, repeatMoths];
+  late final GeneratedColumn<String> monthYearString = GeneratedColumn<String>(
+      'month_year_string', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        title,
+        amount,
+        createdAt,
+        type,
+        category,
+        repeat,
+        repeatMoths,
+        monthYearString
+      ];
   @override
   String get aliasedName => _alias ?? 'moviment';
   @override
@@ -372,6 +416,12 @@ class $MovimentTable extends Moviment
     } else if (isInserting) {
       context.missing(_repeatMothsMeta);
     }
+    if (data.containsKey('month_year_string')) {
+      context.handle(
+          _monthYearStringMeta,
+          monthYearString.isAcceptableOrUnknown(
+              data['month_year_string']!, _monthYearStringMeta));
+    }
     return context;
   }
 
@@ -397,6 +447,8 @@ class $MovimentTable extends Moviment
           .read(DriftSqlType.bool, data['${effectivePrefix}repeat'])!,
       repeatMoths: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}repeat_moths'])!,
+      monthYearString: attachedDatabase.options.types.read(
+          DriftSqlType.string, data['${effectivePrefix}month_year_string']),
     );
   }
 

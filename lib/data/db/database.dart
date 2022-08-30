@@ -21,6 +21,10 @@ class Database extends _$Database {
 
   Stream<List<MovimentData>> getMoviments() => select(moviment).watch();
 
+  Stream<List<MovimentData>> getMovimentsByMonth(String monthAndYear) {
+    return (select(moviment)..where((tbl) => tbl.monthYearString.equals(monthAndYear))).watch();
+  }
+
   Future addMoviment(Insertable<MovimentData> movimentValue) => into(moviment).insert(movimentValue);
 
   Stream<List<MovimentData>> getPositiveValues() {
@@ -52,7 +56,7 @@ class Database extends _$Database {
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    final file = File(p.join(dbFolder.path, 'db03.sqlite'));
     return NativeDatabase(file);
   });
 }
