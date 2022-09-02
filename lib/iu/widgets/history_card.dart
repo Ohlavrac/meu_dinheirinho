@@ -13,15 +13,20 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: ListTile(
-        tileColor: AppColors.primary,
-        leading: icon.icon,
-        title: Text(item.title, style: AppTexts.normal2,),
-        subtitle: Text(item.category, style: AppTexts.category,),
-        trailing: item.type == true ? Text("R\$ ${item.amount}", style: AppTexts.positive,) : 
-                  Text("- R\$ ${item.amount}", style: AppTexts.negative,)
+    return GestureDetector(
+      onTap: () => {
+        Navigator.pushNamed(context, "/movimentDetails", arguments: item.id),
+      },
+      child: Card(
+        elevation: 5,
+        child: ListTile(
+          tileColor: AppColors.primary,
+          leading: icon.icon,
+          title: Text(item.title, style: AppTexts.normal2,),
+          subtitle: Text(item.category, style: AppTexts.category,),
+          trailing: item.type == true ? Text("R\$ ${item.amount}", style: AppTexts.positive,) : 
+            Text("- R\$ ${item.amount}", style: AppTexts.negative,)
+        ),
       ),
     );
   }

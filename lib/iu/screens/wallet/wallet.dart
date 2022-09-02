@@ -130,10 +130,10 @@ class _WalletState extends State<Wallet> {
                             },
                           );
                         } else {
-                          return const Center(child: Text("ERROR"));
+                          return Center(child: Text("ERROR: ${snapshot.error}"),);
                         }
                       } else if (snapshot.hasData) {
-                        return const Center(child: Text("ERROR"));
+                        return Center(child: Text("ERROR: ${snapshot.error}"),);
                       }
                       return const Center(child: CircularProgressIndicator());
                     }, 

@@ -48,8 +48,16 @@ class Database extends _$Database {
     return query.map((row) => row.read(total)).watchSingle();
   }
 
+  Future<List<MovimentData>> getMovimentById(int movimentID) {
+    return (select(moviment)..where((tbl) => tbl.id.equals(movimentID))).get();
+  }
+
   Future reset() {
     return delete(moviment).go();
+  }
+
+  Future deleteItem(int movimentID) async {
+    return await (delete(moviment)..where((tbl) => tbl.id.equals(movimentID))).go();
   }
 }
 
