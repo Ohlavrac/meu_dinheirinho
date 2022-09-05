@@ -5,6 +5,7 @@ import 'package:meu_dinheirinho/data/db/database.dart';
 import 'package:meu_dinheirinho/domain/use_case/wallet_amount/wallet_amount.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
+import 'package:meu_dinheirinho/iu/widgets/custom_divider.dart';
 import 'package:meu_dinheirinho/iu/widgets/history_card.dart';
 import 'package:meu_dinheirinho/iu/widgets/square_card_button.dart';
 
@@ -61,7 +62,7 @@ class _WalletState extends State<Wallet> {
                         child: Text(DateFormat("d 'de' MMMM 'de' y").format(_date), style: AppTexts.subtitle,),
                       ),
                       StreamBuilder(
-                        stream: db.getMovimentsByMonth(monthAndYear),
+                        stream: db.getMovimentsByMonth(monthAndYear, _date),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.active) {
                             if (snapshot.hasData) {
@@ -105,15 +106,10 @@ class _WalletState extends State<Wallet> {
                     )
                   ],
                 ),
-                Divider(
-                  color: AppColors.textBlack,
-                  indent: 1,
-                  endIndent: 1,
-                  thickness: 2,
-                ),
+                const CustomDivider(),
                 Expanded(
                   child: StreamBuilder<List<MovimentData>>(
-                    stream: db.getMovimentsByMonth(monthAndYear),
+                    stream: db.getMovimentsByMonth(monthAndYear, _date),
                     builder: (context, AsyncSnapshot<List<MovimentData>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.active) {
                         if (snapshot.hasData) {

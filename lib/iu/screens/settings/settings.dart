@@ -16,7 +16,7 @@ class Settings extends StatelessWidget {
               final dao = Database();
               dao.reset();
             },
-            child: Text("RESET THAT SHIT"),
+            child: Text("APAGAR TUDO"),
           ),
         ],
       ),

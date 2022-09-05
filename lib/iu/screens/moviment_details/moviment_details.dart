@@ -51,19 +51,23 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                   Text("Este valor ira se repetir por ${item[0].repeatMoths} meses", style: AppTexts.simple,) :
                   const Text(""),
                   const SizedBox(height: 10,),
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ElevatedButton.icon(
-                        icon: const Icon(Icons.edit),
+                        icon: const Icon(Icons.delete),
                         onPressed: () {
-                          Navigator.pushNamed(context, "/updateMovimentScreen", arguments: movimentID);
+                          //db.deleteItem(movimentID);
+                          Navigator.pop(context);
                         },
-                        label: Text("Editar", style: AppTexts.subtitle,),
-                        style:ElevatedButton.styleFrom(
-                          primary: AppColors.primary
+                        label: Text("Parar de repetir", style: AppTexts.subtitle,),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.teal
                         ),
                       ),
-                      const SizedBox(width: 20,),
+
+                      const SizedBox(height: 15,),
+
                       ElevatedButton.icon(
                         icon: const Icon(Icons.delete),
                         onPressed: () {
@@ -74,7 +78,20 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                         style: ElevatedButton.styleFrom(
                           primary: Colors.red
                         ),
-                      )
+                      ),
+
+                      const SizedBox(height: 15,),
+
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/updateMovimentScreen", arguments: movimentID);
+                        },
+                        label: Text("Editar", style: AppTexts.subtitle,),
+                        style:ElevatedButton.styleFrom(
+                          primary: AppColors.primary
+                        ),
+                      ),
                     ],
                   ),
                 ],

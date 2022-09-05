@@ -22,7 +22,7 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
   DateTime lastDateOfMonth = DateTime(now.year, now.month + 1, 0);
   DateTime? date;
   bool _repeat = false;
-  int mounths = 0;
+  int months = 0;
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   String title = "";
@@ -167,7 +167,7 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
                         labelText: "Quantos Meses",
                       ),
                       onChanged: (value) {
-                        mounths = int.parse(value);
+                        months = int.parse(value);
                       },
                     ),
                   ),
@@ -194,8 +194,10 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
             final dao = Database();
             print(priceConverted);
             
-            print("Title: $title | Category: $_selectedItem | Price: $priceConverted | Date: $date | Repeat: $_repeat | $isLucro | $mounths");
+            print("Title: $title | Category: $_selectedItem | Price: $priceConverted | Date: $date | Repeat: $_repeat | $isLucro | $months");
             
+            var last = date!.add(Duration(days: months * 31));
+
             final movimentData = MovimentCompanion(
               title: Value(title),
               amount: Value(priceConverted),
@@ -203,8 +205,10 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
               type: Value(isLucro!),
               category: Value(_selectedItem!),
               repeat: Value(_repeat),
-              repeatMoths: Value(mounths),
+              repeatMoths: Value(months),
               monthYearString: Value(DateFormat("MMMM y").format(now)),
+              lastMonthYearString: Value(DateFormat("MMMM y").format(last)),
+              lastMonth: Value(last),
             );
 
             // se o mes e ano não existe no db então fazer um novo

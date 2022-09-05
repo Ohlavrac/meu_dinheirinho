@@ -16,4 +16,48 @@ class WalletAmount {
 
     return total;
   }
+
+  //Pega apenas o lucro
+  double getWalletAmountByMonthe(List<MovimentData> movimentValues, String currentMonthYear) {
+    var total = 0.0;
+    for (var c = 0; c < movimentValues.length; c++) {
+
+      if (movimentValues[c].monthYearString == currentMonthYear || movimentValues[c].lastMonthYearString != currentMonthYear) {
+        if (movimentValues[c].type == false) {
+          total = total - movimentValues[c].amount;
+        } else {
+          total = total + movimentValues[c].amount;
+        }
+      }
+    }
+
+    return total;
+  }
+
+  double getWalletSpendingByMonth(List<MovimentData> movimentValues, String currentMonthYear) {
+    var total = 0.0;
+    for (var c = 0; c < movimentValues.length; c++) {
+
+      if (movimentValues[c].monthYearString == currentMonthYear || movimentValues[c].lastMonthYearString != currentMonthYear) {
+        if (movimentValues[c].type == false) {
+          total = total + movimentValues[c].amount;
+        }
+      }
+    }
+
+    return total;
+  }
+
+  double getWalletTotalAmountByMonth(List<MovimentData> movimentValues, String currentMonthYear) {
+    var total = 0.0;
+    for (var c = 0; c < movimentValues.length; c++) {
+      if (movimentValues[c].monthYearString == currentMonthYear || movimentValues[c].lastMonthYearString != currentMonthYear) {
+        if (movimentValues[c].type == true) {
+          total = total + movimentValues[c].amount;
+        }
+      }
+    }
+
+    return total;
+  }
 }
