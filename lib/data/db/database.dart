@@ -21,8 +21,9 @@ class Database extends _$Database {
 
   Stream<List<MovimentData>> getMoviments() => select(moviment).watch();
 
-  Stream<List<MovimentData>> getMovimentsByMonth(String monthAndYear) {
-    return (select(moviment)..where((tbl) => tbl.monthYearString.equals(monthAndYear))).watch();
+  Stream<List<MovimentData>> getMovimentsByMonth(String monthAndYear, DateTime monthAndYearDefault) {
+    print(monthAndYearDefault);
+    return (select(moviment)..where((tbl) => tbl.monthYearString.equals(monthAndYear) | tbl.repeat.equals(true) & tbl.lastMonth.isBiggerOrEqualValue(monthAndYearDefault) & tbl.createdAt.isSmallerOrEqualValue(monthAndYearDefault))).watch();
   }
 
   Future addMoviment(Insertable<MovimentData> movimentValue) => into(moviment).insert(movimentValue);
@@ -59,12 +60,17 @@ class Database extends _$Database {
   Future deleteItem(int movimentID) async {
     return await (delete(moviment)..where((tbl) => tbl.id.equals(movimentID))).go();
   }
+
+  Future updateItem(Insertable<MovimentData> newmoviment) async {
+    print(newmoviment);
+    return await update(moviment).replace(newmoviment);
+  }
 }
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db03.sqlite'));
+    final file = File(p.join(dbFolder.path, 'db05.sqlite'));
     return NativeDatabase(file);
   });
 }

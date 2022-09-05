@@ -10,4 +10,6 @@ class Moviment extends Table {
   BoolColumn get repeat => boolean()();
   IntColumn get repeatMoths => integer()();
   TextColumn get monthYearString => text().nullable()();
+  TextColumn get lastMonthYearString => text().nullable()();
+  DateTimeColumn get lastMonth => dateTime().nullable()();
 }

@@ -17,6 +17,8 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
   final bool repeat;
   final int repeatMoths;
   final String? monthYearString;
+  final String? lastMonthYearString;
+  final DateTime? lastMonth;
   const MovimentData(
       {required this.id,
       required this.title,
@@ -26,9 +28,9 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
       required this.category,
       required this.repeat,
       required this.repeatMoths,
-      this.monthYearString});
-
-  get content => null;
+      this.monthYearString,
+      this.lastMonthYearString,
+      this.lastMonth});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -44,6 +46,12 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
     map['repeat_moths'] = Variable<int>(repeatMoths);
     if (!nullToAbsent || monthYearString != null) {
       map['month_year_string'] = Variable<String>(monthYearString);
+    }
+    if (!nullToAbsent || lastMonthYearString != null) {
+      map['last_month_year_string'] = Variable<String>(lastMonthYearString);
+    }
+    if (!nullToAbsent || lastMonth != null) {
+      map['last_month'] = Variable<DateTime>(lastMonth);
     }
     return map;
   }
@@ -63,6 +71,12 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
       monthYearString: monthYearString == null && nullToAbsent
           ? const Value.absent()
           : Value(monthYearString),
+      lastMonthYearString: lastMonthYearString == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastMonthYearString),
+      lastMonth: lastMonth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastMonth),
     );
   }
 
@@ -79,6 +93,9 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
       repeat: serializer.fromJson<bool>(json['repeat']),
       repeatMoths: serializer.fromJson<int>(json['repeatMoths']),
       monthYearString: serializer.fromJson<String?>(json['monthYearString']),
+      lastMonthYearString:
+          serializer.fromJson<String?>(json['lastMonthYearString']),
+      lastMonth: serializer.fromJson<DateTime?>(json['lastMonth']),
     );
   }
   @override
@@ -94,6 +111,8 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
       'repeat': serializer.toJson<bool>(repeat),
       'repeatMoths': serializer.toJson<int>(repeatMoths),
       'monthYearString': serializer.toJson<String?>(monthYearString),
+      'lastMonthYearString': serializer.toJson<String?>(lastMonthYearString),
+      'lastMonth': serializer.toJson<DateTime?>(lastMonth),
     };
   }
 
@@ -106,7 +125,9 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
           String? category,
           bool? repeat,
           int? repeatMoths,
-          Value<String?> monthYearString = const Value.absent()}) =>
+          Value<String?> monthYearString = const Value.absent(),
+          Value<String?> lastMonthYearString = const Value.absent(),
+          Value<DateTime?> lastMonth = const Value.absent()}) =>
       MovimentData(
         id: id ?? this.id,
         title: title ?? this.title,
@@ -119,6 +140,10 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
         monthYearString: monthYearString.present
             ? monthYearString.value
             : this.monthYearString,
+        lastMonthYearString: lastMonthYearString.present
+            ? lastMonthYearString.value
+            : this.lastMonthYearString,
+        lastMonth: lastMonth.present ? lastMonth.value : this.lastMonth,
       );
   @override
   String toString() {
@@ -131,14 +156,16 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
           ..write('category: $category, ')
           ..write('repeat: $repeat, ')
           ..write('repeatMoths: $repeatMoths, ')
-          ..write('monthYearString: $monthYearString')
+          ..write('monthYearString: $monthYearString, ')
+          ..write('lastMonthYearString: $lastMonthYearString, ')
+          ..write('lastMonth: $lastMonth')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, title, amount, createdAt, type, category,
-      repeat, repeatMoths, monthYearString);
+      repeat, repeatMoths, monthYearString, lastMonthYearString, lastMonth);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -151,7 +178,9 @@ class MovimentData extends DataClass implements Insertable<MovimentData> {
           other.category == this.category &&
           other.repeat == this.repeat &&
           other.repeatMoths == this.repeatMoths &&
-          other.monthYearString == this.monthYearString);
+          other.monthYearString == this.monthYearString &&
+          other.lastMonthYearString == this.lastMonthYearString &&
+          other.lastMonth == this.lastMonth);
 }
 
 class MovimentCompanion extends UpdateCompanion<MovimentData> {
@@ -164,6 +193,8 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
   final Value<bool> repeat;
   final Value<int> repeatMoths;
   final Value<String?> monthYearString;
+  final Value<String?> lastMonthYearString;
+  final Value<DateTime?> lastMonth;
   const MovimentCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -174,6 +205,8 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
     this.repeat = const Value.absent(),
     this.repeatMoths = const Value.absent(),
     this.monthYearString = const Value.absent(),
+    this.lastMonthYearString = const Value.absent(),
+    this.lastMonth = const Value.absent(),
   });
   MovimentCompanion.insert({
     this.id = const Value.absent(),
@@ -185,6 +218,8 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
     required bool repeat,
     required int repeatMoths,
     this.monthYearString = const Value.absent(),
+    this.lastMonthYearString = const Value.absent(),
+    this.lastMonth = const Value.absent(),
   })  : title = Value(title),
         amount = Value(amount),
         type = Value(type),
@@ -201,6 +236,8 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
     Expression<bool>? repeat,
     Expression<int>? repeatMoths,
     Expression<String>? monthYearString,
+    Expression<String>? lastMonthYearString,
+    Expression<DateTime>? lastMonth,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -212,6 +249,9 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
       if (repeat != null) 'repeat': repeat,
       if (repeatMoths != null) 'repeat_moths': repeatMoths,
       if (monthYearString != null) 'month_year_string': monthYearString,
+      if (lastMonthYearString != null)
+        'last_month_year_string': lastMonthYearString,
+      if (lastMonth != null) 'last_month': lastMonth,
     });
   }
 
@@ -224,7 +264,9 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
       Value<String>? category,
       Value<bool>? repeat,
       Value<int>? repeatMoths,
-      Value<String?>? monthYearString}) {
+      Value<String?>? monthYearString,
+      Value<String?>? lastMonthYearString,
+      Value<DateTime?>? lastMonth}) {
     return MovimentCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -235,6 +277,8 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
       repeat: repeat ?? this.repeat,
       repeatMoths: repeatMoths ?? this.repeatMoths,
       monthYearString: monthYearString ?? this.monthYearString,
+      lastMonthYearString: lastMonthYearString ?? this.lastMonthYearString,
+      lastMonth: lastMonth ?? this.lastMonth,
     );
   }
 
@@ -268,6 +312,13 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
     if (monthYearString.present) {
       map['month_year_string'] = Variable<String>(monthYearString.value);
     }
+    if (lastMonthYearString.present) {
+      map['last_month_year_string'] =
+          Variable<String>(lastMonthYearString.value);
+    }
+    if (lastMonth.present) {
+      map['last_month'] = Variable<DateTime>(lastMonth.value);
+    }
     return map;
   }
 
@@ -282,7 +333,9 @@ class MovimentCompanion extends UpdateCompanion<MovimentData> {
           ..write('category: $category, ')
           ..write('repeat: $repeat, ')
           ..write('repeatMoths: $repeatMoths, ')
-          ..write('monthYearString: $monthYearString')
+          ..write('monthYearString: $monthYearString, ')
+          ..write('lastMonthYearString: $lastMonthYearString, ')
+          ..write('lastMonth: $lastMonth')
           ..write(')'))
         .toString();
   }
@@ -350,6 +403,17 @@ class $MovimentTable extends Moviment
   late final GeneratedColumn<String> monthYearString = GeneratedColumn<String>(
       'month_year_string', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  final VerificationMeta _lastMonthYearStringMeta =
+      const VerificationMeta('lastMonthYearString');
+  @override
+  late final GeneratedColumn<String> lastMonthYearString =
+      GeneratedColumn<String>('last_month_year_string', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  final VerificationMeta _lastMonthMeta = const VerificationMeta('lastMonth');
+  @override
+  late final GeneratedColumn<DateTime> lastMonth = GeneratedColumn<DateTime>(
+      'last_month', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -360,7 +424,9 @@ class $MovimentTable extends Moviment
         category,
         repeat,
         repeatMoths,
-        monthYearString
+        monthYearString,
+        lastMonthYearString,
+        lastMonth
       ];
   @override
   String get aliasedName => _alias ?? 'moviment';
@@ -422,6 +488,16 @@ class $MovimentTable extends Moviment
           monthYearString.isAcceptableOrUnknown(
               data['month_year_string']!, _monthYearStringMeta));
     }
+    if (data.containsKey('last_month_year_string')) {
+      context.handle(
+          _lastMonthYearStringMeta,
+          lastMonthYearString.isAcceptableOrUnknown(
+              data['last_month_year_string']!, _lastMonthYearStringMeta));
+    }
+    if (data.containsKey('last_month')) {
+      context.handle(_lastMonthMeta,
+          lastMonth.isAcceptableOrUnknown(data['last_month']!, _lastMonthMeta));
+    }
     return context;
   }
 
@@ -449,6 +525,11 @@ class $MovimentTable extends Moviment
           .read(DriftSqlType.int, data['${effectivePrefix}repeat_moths'])!,
       monthYearString: attachedDatabase.options.types.read(
           DriftSqlType.string, data['${effectivePrefix}month_year_string']),
+      lastMonthYearString: attachedDatabase.options.types.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}last_month_year_string']),
+      lastMonth: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}last_month']),
     );
   }
 
