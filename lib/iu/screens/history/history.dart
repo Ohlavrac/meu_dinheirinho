@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
+import 'package:meu_dinheirinho/iu/widgets/custom_divider.dart';
 
 import '../../../data/data_source/data_source_base_category.dart';
 import '../../../data/db/database.dart';
@@ -27,12 +28,7 @@ class _HistoryState extends State<History> {
         children: [
           Text("Historico Geral", style: AppTexts.title,),
           Text("Historico contendo todas as movimentações da sua carteira.", style: AppTexts.pageDescription,),
-          Divider(
-                  color: AppColors.textBlack,
-                  indent: 1,
-                  endIndent: 1,
-                  thickness: 2,
-                ),
+          const CustomDivider(),
           Expanded(
             child: StreamBuilder<List<MovimentData>>(
                             stream: db.getMoviments(),
