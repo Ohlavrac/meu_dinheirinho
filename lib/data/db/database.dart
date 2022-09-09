@@ -62,8 +62,11 @@ class Database extends _$Database {
   }
 
   Future updateItem(Insertable<MovimentData> newmoviment) async {
-    print(newmoviment);
     return await update(moviment).replace(newmoviment);
+  }
+
+  Future stopMovementContinue(Insertable<MovimentData> updatemoviment) async {
+    return await update(moviment).replace(updatemoviment);
   }
 }
 

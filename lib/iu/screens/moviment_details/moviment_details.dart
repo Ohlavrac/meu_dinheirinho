@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/db/database.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
+import 'package:drift/drift.dart' hide Column;
 
 class MovimentDetails extends StatefulWidget {
   const MovimentDetails({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _MovimentDetailsState extends State<MovimentDetails> {
   Widget build(BuildContext context) {
     var movimentID = ModalRoute.of(context)!.settings.arguments as int;
     Database db = Database();
+    DateTime date = DateTime.now();
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -57,7 +59,20 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                       ElevatedButton.icon(
                         icon: const Icon(Icons.delete),
                         onPressed: () {
-                          //db.deleteItem(movimentID);
+                          final movimentData = MovimentCompanion(
+                            id: Value(movimentID),
+                            title: Value(item[0].title),
+                            amount: Value(item[0].amount),
+                            createdAt: Value(item[0].createdAt),
+                            type: Value(item[0].type),
+                            category: Value(item[0].category),
+                            repeat: const Value(false),
+                            repeatMoths: const Value(0),
+                            monthYearString: Value(item[0].monthYearString),
+                            lastMonth: Value(date),
+                            lastMonthYearString: Value(DateFormat("MMMM y").format(date))
+                          );
+                          db.stopMovementContinue(movimentData);
                           Navigator.pop(context);
                         },
                         label: Text("Parar de repetir", style: AppTexts.subtitle,),
