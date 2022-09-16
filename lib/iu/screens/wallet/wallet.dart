@@ -19,7 +19,7 @@ class Wallet extends StatefulWidget {
 class _WalletState extends State<Wallet> {
   final DateTime _date = DateTime.now();
   DataSourceBaseCategory baseCategoryData = DataSourceBaseCategory();
-  final oCcy = NumberFormat("#,##0.00", "en_US");
+  final formatCurrency = NumberFormat.simpleCurrency(name: "R\$ ");
   String monthAndYear = DateFormat("MMMM y").format(DateTime.now());
   WalletAmount walletAmount = WalletAmount();
 
@@ -70,7 +70,7 @@ class _WalletState extends State<Wallet> {
                               
                               var total = walletAmount.getWalletAmount(amounts);
 
-                              return Text("R\$ $total", style: AppTexts.money,);
+                              return Text("${formatCurrency.format(total)}", style: AppTexts.money,);
                             } else {
                               return const Center(child: Text("ERROR"),);
                             }

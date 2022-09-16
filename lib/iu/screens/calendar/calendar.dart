@@ -23,6 +23,7 @@ class _CalendarState extends State<Calendar> {
   DateTime focusDay = DateTime.now();
   String monthAndYear = DateFormat("MMMM y").format(DateTime.now());
   WalletAmount walletAmount = WalletAmount();
+  final formatCurrency = NumberFormat.simpleCurrency(name: "R\$ ");
   
 
   @override
@@ -61,8 +62,6 @@ class _CalendarState extends State<Calendar> {
                   if (snapshot.connectionState == ConnectionState.active) {
                     if (snapshot.hasData) {
                       var amounts = snapshot.data as List<MovimentData>;
-
-                      print(amounts);
                                   
                       var total = walletAmount.getWalletAmountByMonthe(amounts, focusDayString);
                       var totalSpending = walletAmount.getWalletSpendingByMonth(amounts, focusDayString);
@@ -72,9 +71,9 @@ class _CalendarState extends State<Calendar> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Lucro total do mes: R\$ $total", style: AppTexts.simple,),
-                          Text("Gasto total do mes: R\$ $totalSpending", style: AppTexts.simple,),
-                          Text("Movimento total do mes: R\$ $totalMovimentAmount", style: AppTexts.simple,),
+                          Text("Lucro total do Mes: ${formatCurrency.format(total)}", style: AppTexts.simple,),
+                          Text("Gasto total do Mes: ${formatCurrency.format(totalSpending)}", style: AppTexts.simple,),
+                          Text("Movimento total do Mes: ${formatCurrency.format(totalMovimentAmount)}", style: AppTexts.simple,),
                         ],
                       );
                     } else {
