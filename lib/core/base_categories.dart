@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 
-import '../data/entities/base_category_model.dart';
+import '../data/dtos/base_category_model.dart';
 
 List<BaseCategoryModel> baseCategory = baseCategoriesJson.map((object) => BaseCategoryModel.fromJson(object)).toList();
 

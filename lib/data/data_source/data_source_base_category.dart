@@ -1,4 +1,4 @@
-import 'package:meu_dinheirinho/data/entities/base_category_model.dart';
+import 'package:meu_dinheirinho/data/dtos/base_category_model.dart';
 import 'package:meu_dinheirinho/domain/data_source/data_source_local.dart';
 
 import '../../core/base_categories.dart';
