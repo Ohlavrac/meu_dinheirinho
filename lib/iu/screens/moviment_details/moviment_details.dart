@@ -77,7 +77,7 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                         },
                         label: Text("Parar de repetir", style: AppTexts.subtitle,),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.teal
+                          backgroundColor: Colors.teal
                         ),
                       ),
 
@@ -91,7 +91,7 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                         },
                         label: Text("Deletar", style: AppTexts.subtitle,),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.red
+                          backgroundColor: Colors.red
                         ),
                       ),
 
@@ -104,7 +104,7 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                         },
                         label: Text("Editar", style: AppTexts.subtitle,),
                         style:ElevatedButton.styleFrom(
-                          primary: AppColors.primary
+                          backgroundColor: AppColors.primary
                         ),
                       ),
                     ],

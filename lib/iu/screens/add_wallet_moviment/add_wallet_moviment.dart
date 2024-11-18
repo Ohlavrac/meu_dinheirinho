@@ -103,7 +103,7 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
                       width: 178,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: AppColors.primary,
+                          backgroundColor: AppColors.primary,
                           shape: RoundedRectangleBorder(
                             side: BorderSide(width: 1.5, color: AppColors.textBlack)
                           ),
@@ -182,7 +182,7 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
         padding: const EdgeInsets.all(15),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: AppColors.primary,
+            backgroundColor: AppColors.primary,
             shape: RoundedRectangleBorder(
               side: BorderSide(width: 1.5, color: AppColors.textBlack)
             ),

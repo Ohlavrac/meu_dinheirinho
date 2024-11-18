@@ -23,7 +23,7 @@ class _SmallButonState extends State<SmallButon> {
       onPressed: widget.onPressed(),
       label: Text(widget.label, style: AppTexts.subtitle,),
       style:ElevatedButton.styleFrom(
-        primary: widget.color
+        backgroundColor: widget.color
       ),
     );
   }
