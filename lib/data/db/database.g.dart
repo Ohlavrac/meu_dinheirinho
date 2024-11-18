@@ -192,10 +192,10 @@ class $MovimentTable extends Moviment
       repeat: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}repeat'])!,
       monthYearString: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}month_year_string']),
+          DriftSqlType.string, data['${effectivePrefix}month_year_string'])!,
       lastMonthYearString: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
-          data['${effectivePrefix}last_month_year_string']),
+          data['${effectivePrefix}last_month_year_string'])!,
     );
   }
 
