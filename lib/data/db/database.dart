@@ -3,11 +3,12 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:meu_dinheirinho/data/entities/moviment.dart';
+import 'package:meu_dinheirinho/data/db/moviments_table.dart';
+import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
-// precisa desse cara aq antes de por o comando (flutter pub run build_runner build)
+// precisa desse cara aq antes de por o comando (dart run build_runner build)
 part 'database.g.dart';
 
 @DriftDatabase(
@@ -17,9 +18,9 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 1;
 
-  Stream<List<MovimentData>> getMoviments() => select(moviment).watch();
+  /*Stream<List<MovimentData>> getMoviments() => select(moviment).watch();
 
   Stream<List<MovimentData>> getMovimentsByMonth(String monthAndYear, DateTime monthAndYearDefault) {
     print(monthAndYearDefault);
@@ -67,13 +68,13 @@ class Database extends _$Database {
 
   Future stopMovementContinue(Insertable<MovimentData> updatemoviment) async {
     return await update(moviment).replace(updatemoviment);
-  }
+  }*/
 }
 
-LazyDatabase _openConnection() {
-  return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db05.sqlite'));
-    return NativeDatabase(file);
+  LazyDatabase _openConnection() {
+    return LazyDatabase(() async {
+      final dbFolder = await getApplicationDocumentsDirectory();
+      final file = File(p.join(dbFolder.path, 'db1.sqlite'));
+      return NativeDatabase(file);
   });
 }

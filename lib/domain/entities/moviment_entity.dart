@@ -1,4 +1,4 @@
-class Moviment {
+class MovimentEntity {
   int? id;
   String? title;
   double? amount;
@@ -11,7 +11,7 @@ class Moviment {
   String? lastMonthYearString;
   DateTime? LastMonthYear;
 
-  Moviment({
+  MovimentEntity({
     this.id,
     this.title,
     this.amount,

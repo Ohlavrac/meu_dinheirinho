@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
+import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 
+@UseRowClass(MovimentEntity)
 class Moviment extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get title => text().withLength(min: 1, max: 100)();
@@ -12,4 +14,7 @@ class Moviment extends Table {
   TextColumn get monthYearString => text().nullable()();
   TextColumn get lastMonthYearString => text().nullable()();
   DateTimeColumn get lastMonth => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

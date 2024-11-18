@@ -18,7 +18,8 @@ class PriceInput extends StatelessWidget {
       width: width,
       child: TextField(
         keyboardType: isNumberInput == true ? TextInputType.number : TextInputType.text,
-        inputFormatters: [CurrencyTextInputFormatter(decimalDigits: 0, symbol: "R\$",)],
+        //TODO UPDATE THIS
+        //inputFormatters: [CurrencyTextInputFormatter(decimalDigits: 0, symbol: "R\$",)],
         style: AppTexts.simple,
         decoration: InputDecoration(
           filled: true,
