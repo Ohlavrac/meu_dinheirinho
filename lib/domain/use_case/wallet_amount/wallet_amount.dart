@@ -1,7 +1,9 @@
+import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
+
 import '../../../data/db/database.dart';
 
 class WalletAmount {
-  double getWalletAmount(List<MovimentData> movimentsValues) {
+  double getWalletAmount(List<MovimentEntity> movimentsValues) {
     var total = 0.0;
 
     for(var c = 0; c < movimentsValues.length; c++) {
@@ -18,7 +20,7 @@ class WalletAmount {
   }
 
   //Pega apenas o lucro
-  double getWalletAmountByMonthe(List<MovimentData> movimentValues, String currentMonthYear) {
+  double getWalletAmountByMonthe(List<MovimentEntity> movimentValues, String currentMonthYear) {
     var total = 0.0;
     for (var c = 0; c < movimentValues.length; c++) {
 
@@ -34,7 +36,7 @@ class WalletAmount {
     return total;
   }
 
-  double getWalletSpendingByMonth(List<MovimentData> movimentValues, String currentMonthYear) {
+  double getWalletSpendingByMonth(List<MovimentEntity> movimentValues, String currentMonthYear) {
     var total = 0.0;
     for (var c = 0; c < movimentValues.length; c++) {
 
@@ -48,7 +50,7 @@ class WalletAmount {
     return total;
   }
 
-  double getWalletTotalAmountByMonth(List<MovimentData> movimentValues, String currentMonthYear) {
+  double getWalletTotalAmountByMonth(List<MovimentEntity> movimentValues, String currentMonthYear) {
     var total = 0.0;
     for (var c = 0; c < movimentValues.length; c++) {
       if (movimentValues[c].monthYearString == currentMonthYear || movimentValues[c].lastMonthYearString != currentMonthYear) {

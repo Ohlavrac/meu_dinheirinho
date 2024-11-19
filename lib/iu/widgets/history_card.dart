@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/db/database.dart';
-import 'package:meu_dinheirinho/data/entities/base_category_model.dart';
+import 'package:meu_dinheirinho/data/dtos/base_category_model.dart';
 
 import '../colors/app_colors.dart';
 import '../texts/app_texts.dart';

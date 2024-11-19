@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' hide Column;
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/db/database.dart';
+import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/widgets/large_text_field.dart';
 import 'package:meu_dinheirinho/iu/widgets/price_input.dart';
@@ -198,17 +199,17 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
             
             var last = date!.add(Duration(days: months * 31));
 
-            final movimentData = MovimentCompanion(
-              title: Value(title),
-              amount: Value(priceConverted),
-              createdAt: Value(date),
-              type: Value(isLucro!),
-              category: Value(_selectedItem!),
-              repeat: Value(_repeat),
-              repeatMoths: Value(months),
-              monthYearString: Value(DateFormat("MMMM y").format(now)),
-              lastMonthYearString: Value(DateFormat("MMMM y").format(last)),
-              lastMonth: Value(last),
+            MovimentEntity movimentData = MovimentEntity(
+              title: (title),
+              amount: (priceConverted),
+              createdAt: (date),
+              type: (isLucro!),
+              category: (_selectedItem!),
+              repeat: (_repeat),
+              repeatMonths: (months),
+              monthYearString: (DateFormat("MMMM y").format(now)),
+              lastMonthYearString: (DateFormat("MMMM y").format(last)),
+              //lastMonth: Value(last),
             );
 
             // se o mes e ano não existe no db então fazer um novo

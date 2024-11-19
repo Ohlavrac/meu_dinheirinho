@@ -1,27 +1,27 @@
 class MovimentEntity {
   int? id;
-  String? title;
-  double? amount;
+  late String title;
+  late double amount;
   DateTime? createdAt;
-  bool? type;
-  String? category;
-  bool? repeat;
+  late bool type;
+  late String category;
+  late bool repeat;
   int? repeatMonths;
-  String? monthYearString;
-  String? lastMonthYearString;
+  late String monthYearString;
+  late String lastMonthYearString;
   DateTime? LastMonthYear;
 
   MovimentEntity({
     this.id,
-    this.title,
-    this.amount,
+    required this.title,
+    required this.amount,
     this.createdAt,
-    this.type,
-    this.category,
-    this.repeat,
+    required this.type,
+    required this.category,
+    required this.repeat,
     this.repeatMonths,
-    this.monthYearString,
-    this.lastMonthYearString,
+    required this.monthYearString,
+    required this.lastMonthYearString,
     this.LastMonthYear
   });
 }
