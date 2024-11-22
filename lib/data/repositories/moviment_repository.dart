@@ -1,4 +1,5 @@
 import 'package:meu_dinheirinho/data/data_source/ilocal_datasource.dart';
+import 'package:meu_dinheirinho/data/dtos/moviments_dto.dart';
 import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/domain/repository/imoviment_repository.dart';
 import 'package:meu_dinheirinho/mappers/moviment_mapper.dart';
@@ -15,8 +16,20 @@ class MovimentRepository implements IMovimentRepository {
 
   @override
   Stream<List<MovimentEntity>> getMoviments() async* {
-    // TODO: implement getMoviments
-    throw UnimplementedError();
+    Stream<List<MovimentsDto>> movimentsDto = local.getMoviments();
+
+    yield* movimentsDto.map((movimentsEntity) => movimentsEntity.map((moviment) => MovimentEntity(
+      title: moviment.title,
+      amount: moviment.amount,
+      createdAt: moviment.createdAt,
+      type: moviment.type,
+      category: moviment.category,
+      repeat: moviment.repeat,
+      repeatMonths: moviment.repeatMonths,
+      monthYearString: moviment.monthYearString,
+      lastMonthYearString: moviment.lastMonthYearString, 
+      lastMonthYear: moviment.lastMonthYear
+    )).toList());
   }
 
 }
