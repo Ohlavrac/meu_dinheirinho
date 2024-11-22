@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:drift/drift.dart' hide Column;
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/db/database.dart';
 import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
+import 'package:meu_dinheirinho/iu/providers/moviment_provider.dart';
 import 'package:meu_dinheirinho/iu/widgets/large_text_field.dart';
 import 'package:meu_dinheirinho/iu/widgets/price_input.dart';
+import 'package:provider/provider.dart';
 
 import '../../../data/data_source/data_source_base_category.dart';
 import '../../texts/app_texts.dart';
@@ -27,13 +28,15 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   String title = "";
-  String? price = "";
+  String price = "";
 
   @override
   DataSourceBaseCategory baseCategoryData = DataSourceBaseCategory();
   Widget build(BuildContext context) {
     var items = baseCategoryData.getKeys();
     var isLucro = ModalRoute.of(context)!.settings.arguments as bool?;
+
+    var movimentProvider = Provider.of<MovimentProvider>(context);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -189,32 +192,25 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
             ),
           ),
           onPressed: () async {
-            var formatPriceString = price?.replaceRange(0, 2, "");
-            var formatPricestring2 = formatPriceString?.replaceAll(",", "");
-            var priceConverted = double.parse(formatPricestring2!);
-            final dao = Database();
-            print(priceConverted);
             
-            print("Title: $title | Category: $_selectedItem | Price: $priceConverted | Date: $date | Repeat: $_repeat | $isLucro | $months");
+            print("Title: $title | Category: $_selectedItem | Price: $price | Date: $date | Repeat: $_repeat | $isLucro | $months");
             
             var last = date!.add(Duration(days: months * 31));
 
-            MovimentEntity movimentData = MovimentEntity(
-              title: (title),
-              amount: (priceConverted),
-              createdAt: (date),
-              type: (isLucro!),
-              category: (_selectedItem!),
-              repeat: (_repeat),
-              repeatMonths: (months),
-              monthYearString: (DateFormat("MMMM y").format(now)),
-              lastMonthYearString: (DateFormat("MMMM y").format(last)),
-              //lastMonth: Value(last),
+            MovimentEntity moviment = MovimentEntity(
+              title: title,
+              amount: double.parse(price),
+              createdAt: date!,
+              type: isLucro!,
+              category: _selectedItem!,
+              repeat: _repeat,
+              repeatMonths: months,
+              monthYearString: DateFormat("MMMM y").format(now),
+              lastMonthYearString: DateFormat("MMMM y").format(last)
             );
 
-            // se o mes e ano não existe no db então fazer um novo
-            print(">>>> ${DateFormat("MMMM y").format(now)}");
-            dao.addMoviment(movimentData);
+            await movimentProvider.createNewMoviment(moviment);
+
             Navigator.pop(context);
           }, child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
