@@ -59,11 +59,11 @@ class $MovimentTable extends Moviment
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("repeat" IN (0, 1))'));
-  static const VerificationMeta _repeatMothsMeta =
-      const VerificationMeta('repeatMoths');
+  static const VerificationMeta _repeatMonthsMeta =
+      const VerificationMeta('repeatMonths');
   @override
-  late final GeneratedColumn<int> repeatMoths = GeneratedColumn<int>(
-      'repeat_moths', aliasedName, false,
+  late final GeneratedColumn<int> repeatMonths = GeneratedColumn<int>(
+      'repeat_months', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _monthYearStringMeta =
       const VerificationMeta('monthYearString');
@@ -77,12 +77,12 @@ class $MovimentTable extends Moviment
   late final GeneratedColumn<String> lastMonthYearString =
       GeneratedColumn<String>('last_month_year_string', aliasedName, true,
           type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _lastMonthMeta =
-      const VerificationMeta('lastMonth');
+  static const VerificationMeta _lastMonthYearMeta =
+      const VerificationMeta('lastMonthYear');
   @override
-  late final GeneratedColumn<DateTime> lastMonth = GeneratedColumn<DateTime>(
-      'last_month', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  late final GeneratedColumn<DateTime> lastMonthYear =
+      GeneratedColumn<DateTime>('last_month_year', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -92,10 +92,10 @@ class $MovimentTable extends Moviment
         type,
         category,
         repeat,
-        repeatMoths,
+        repeatMonths,
         monthYearString,
         lastMonthYearString,
-        lastMonth
+        lastMonthYear
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -144,13 +144,13 @@ class $MovimentTable extends Moviment
     } else if (isInserting) {
       context.missing(_repeatMeta);
     }
-    if (data.containsKey('repeat_moths')) {
+    if (data.containsKey('repeat_months')) {
       context.handle(
-          _repeatMothsMeta,
-          repeatMoths.isAcceptableOrUnknown(
-              data['repeat_moths']!, _repeatMothsMeta));
+          _repeatMonthsMeta,
+          repeatMonths.isAcceptableOrUnknown(
+              data['repeat_months']!, _repeatMonthsMeta));
     } else if (isInserting) {
-      context.missing(_repeatMothsMeta);
+      context.missing(_repeatMonthsMeta);
     }
     if (data.containsKey('month_year_string')) {
       context.handle(
@@ -164,9 +164,11 @@ class $MovimentTable extends Moviment
           lastMonthYearString.isAcceptableOrUnknown(
               data['last_month_year_string']!, _lastMonthYearStringMeta));
     }
-    if (data.containsKey('last_month')) {
-      context.handle(_lastMonthMeta,
-          lastMonth.isAcceptableOrUnknown(data['last_month']!, _lastMonthMeta));
+    if (data.containsKey('last_month_year')) {
+      context.handle(
+          _lastMonthYearMeta,
+          lastMonthYear.isAcceptableOrUnknown(
+              data['last_month_year']!, _lastMonthYearMeta));
     }
     return context;
   }
@@ -191,11 +193,15 @@ class $MovimentTable extends Moviment
           .read(DriftSqlType.string, data['${effectivePrefix}category'])!,
       repeat: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}repeat'])!,
+      repeatMonths: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}repeat_months'])!,
       monthYearString: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}month_year_string'])!,
       lastMonthYearString: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}last_month_year_string'])!,
+      lastMonthYear: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}last_month_year']),
     );
   }
 
@@ -213,10 +219,10 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
   final Value<bool> type;
   final Value<String> category;
   final Value<bool> repeat;
-  final Value<int> repeatMoths;
+  final Value<int> repeatMonths;
   final Value<String?> monthYearString;
   final Value<String?> lastMonthYearString;
-  final Value<DateTime?> lastMonth;
+  final Value<DateTime?> lastMonthYear;
   const MovimentCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -225,10 +231,10 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
     this.type = const Value.absent(),
     this.category = const Value.absent(),
     this.repeat = const Value.absent(),
-    this.repeatMoths = const Value.absent(),
+    this.repeatMonths = const Value.absent(),
     this.monthYearString = const Value.absent(),
     this.lastMonthYearString = const Value.absent(),
-    this.lastMonth = const Value.absent(),
+    this.lastMonthYear = const Value.absent(),
   });
   MovimentCompanion.insert({
     this.id = const Value.absent(),
@@ -238,16 +244,16 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
     required bool type,
     required String category,
     required bool repeat,
-    required int repeatMoths,
+    required int repeatMonths,
     this.monthYearString = const Value.absent(),
     this.lastMonthYearString = const Value.absent(),
-    this.lastMonth = const Value.absent(),
+    this.lastMonthYear = const Value.absent(),
   })  : title = Value(title),
         amount = Value(amount),
         type = Value(type),
         category = Value(category),
         repeat = Value(repeat),
-        repeatMoths = Value(repeatMoths);
+        repeatMonths = Value(repeatMonths);
   static Insertable<MovimentEntity> custom({
     Expression<int>? id,
     Expression<String>? title,
@@ -256,10 +262,10 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
     Expression<bool>? type,
     Expression<String>? category,
     Expression<bool>? repeat,
-    Expression<int>? repeatMoths,
+    Expression<int>? repeatMonths,
     Expression<String>? monthYearString,
     Expression<String>? lastMonthYearString,
-    Expression<DateTime>? lastMonth,
+    Expression<DateTime>? lastMonthYear,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -269,11 +275,11 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
       if (type != null) 'type': type,
       if (category != null) 'category': category,
       if (repeat != null) 'repeat': repeat,
-      if (repeatMoths != null) 'repeat_moths': repeatMoths,
+      if (repeatMonths != null) 'repeat_months': repeatMonths,
       if (monthYearString != null) 'month_year_string': monthYearString,
       if (lastMonthYearString != null)
         'last_month_year_string': lastMonthYearString,
-      if (lastMonth != null) 'last_month': lastMonth,
+      if (lastMonthYear != null) 'last_month_year': lastMonthYear,
     });
   }
 
@@ -285,10 +291,10 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
       Value<bool>? type,
       Value<String>? category,
       Value<bool>? repeat,
-      Value<int>? repeatMoths,
+      Value<int>? repeatMonths,
       Value<String?>? monthYearString,
       Value<String?>? lastMonthYearString,
-      Value<DateTime?>? lastMonth}) {
+      Value<DateTime?>? lastMonthYear}) {
     return MovimentCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -297,10 +303,10 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
       type: type ?? this.type,
       category: category ?? this.category,
       repeat: repeat ?? this.repeat,
-      repeatMoths: repeatMoths ?? this.repeatMoths,
+      repeatMonths: repeatMonths ?? this.repeatMonths,
       monthYearString: monthYearString ?? this.monthYearString,
       lastMonthYearString: lastMonthYearString ?? this.lastMonthYearString,
-      lastMonth: lastMonth ?? this.lastMonth,
+      lastMonthYear: lastMonthYear ?? this.lastMonthYear,
     );
   }
 
@@ -328,8 +334,8 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
     if (repeat.present) {
       map['repeat'] = Variable<bool>(repeat.value);
     }
-    if (repeatMoths.present) {
-      map['repeat_moths'] = Variable<int>(repeatMoths.value);
+    if (repeatMonths.present) {
+      map['repeat_months'] = Variable<int>(repeatMonths.value);
     }
     if (monthYearString.present) {
       map['month_year_string'] = Variable<String>(monthYearString.value);
@@ -338,8 +344,8 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
       map['last_month_year_string'] =
           Variable<String>(lastMonthYearString.value);
     }
-    if (lastMonth.present) {
-      map['last_month'] = Variable<DateTime>(lastMonth.value);
+    if (lastMonthYear.present) {
+      map['last_month_year'] = Variable<DateTime>(lastMonthYear.value);
     }
     return map;
   }
@@ -354,10 +360,10 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
           ..write('type: $type, ')
           ..write('category: $category, ')
           ..write('repeat: $repeat, ')
-          ..write('repeatMoths: $repeatMoths, ')
+          ..write('repeatMonths: $repeatMonths, ')
           ..write('monthYearString: $monthYearString, ')
           ..write('lastMonthYearString: $lastMonthYearString, ')
-          ..write('lastMonth: $lastMonth')
+          ..write('lastMonthYear: $lastMonthYear')
           ..write(')'))
         .toString();
   }
@@ -382,10 +388,10 @@ typedef $$MovimentTableCreateCompanionBuilder = MovimentCompanion Function({
   required bool type,
   required String category,
   required bool repeat,
-  required int repeatMoths,
+  required int repeatMonths,
   Value<String?> monthYearString,
   Value<String?> lastMonthYearString,
-  Value<DateTime?> lastMonth,
+  Value<DateTime?> lastMonthYear,
 });
 typedef $$MovimentTableUpdateCompanionBuilder = MovimentCompanion Function({
   Value<int> id,
@@ -395,10 +401,10 @@ typedef $$MovimentTableUpdateCompanionBuilder = MovimentCompanion Function({
   Value<bool> type,
   Value<String> category,
   Value<bool> repeat,
-  Value<int> repeatMoths,
+  Value<int> repeatMonths,
   Value<String?> monthYearString,
   Value<String?> lastMonthYearString,
-  Value<DateTime?> lastMonth,
+  Value<DateTime?> lastMonthYear,
 });
 
 class $$MovimentTableFilterComposer
@@ -431,8 +437,8 @@ class $$MovimentTableFilterComposer
   ColumnFilters<bool> get repeat => $composableBuilder(
       column: $table.repeat, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get repeatMoths => $composableBuilder(
-      column: $table.repeatMoths, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get repeatMonths => $composableBuilder(
+      column: $table.repeatMonths, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get monthYearString => $composableBuilder(
       column: $table.monthYearString,
@@ -442,8 +448,8 @@ class $$MovimentTableFilterComposer
       column: $table.lastMonthYearString,
       builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get lastMonth => $composableBuilder(
-      column: $table.lastMonth, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get lastMonthYear => $composableBuilder(
+      column: $table.lastMonthYear, builder: (column) => ColumnFilters(column));
 }
 
 class $$MovimentTableOrderingComposer
@@ -476,8 +482,9 @@ class $$MovimentTableOrderingComposer
   ColumnOrderings<bool> get repeat => $composableBuilder(
       column: $table.repeat, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get repeatMoths => $composableBuilder(
-      column: $table.repeatMoths, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get repeatMonths => $composableBuilder(
+      column: $table.repeatMonths,
+      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get monthYearString => $composableBuilder(
       column: $table.monthYearString,
@@ -487,8 +494,9 @@ class $$MovimentTableOrderingComposer
       column: $table.lastMonthYearString,
       builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get lastMonth => $composableBuilder(
-      column: $table.lastMonth, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get lastMonthYear => $composableBuilder(
+      column: $table.lastMonthYear,
+      builder: (column) => ColumnOrderings(column));
 }
 
 class $$MovimentTableAnnotationComposer
@@ -521,8 +529,8 @@ class $$MovimentTableAnnotationComposer
   GeneratedColumn<bool> get repeat =>
       $composableBuilder(column: $table.repeat, builder: (column) => column);
 
-  GeneratedColumn<int> get repeatMoths => $composableBuilder(
-      column: $table.repeatMoths, builder: (column) => column);
+  GeneratedColumn<int> get repeatMonths => $composableBuilder(
+      column: $table.repeatMonths, builder: (column) => column);
 
   GeneratedColumn<String> get monthYearString => $composableBuilder(
       column: $table.monthYearString, builder: (column) => column);
@@ -530,8 +538,8 @@ class $$MovimentTableAnnotationComposer
   GeneratedColumn<String> get lastMonthYearString => $composableBuilder(
       column: $table.lastMonthYearString, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get lastMonth =>
-      $composableBuilder(column: $table.lastMonth, builder: (column) => column);
+  GeneratedColumn<DateTime> get lastMonthYear => $composableBuilder(
+      column: $table.lastMonthYear, builder: (column) => column);
 }
 
 class $$MovimentTableTableManager extends RootTableManager<
@@ -567,10 +575,10 @@ class $$MovimentTableTableManager extends RootTableManager<
             Value<bool> type = const Value.absent(),
             Value<String> category = const Value.absent(),
             Value<bool> repeat = const Value.absent(),
-            Value<int> repeatMoths = const Value.absent(),
+            Value<int> repeatMonths = const Value.absent(),
             Value<String?> monthYearString = const Value.absent(),
             Value<String?> lastMonthYearString = const Value.absent(),
-            Value<DateTime?> lastMonth = const Value.absent(),
+            Value<DateTime?> lastMonthYear = const Value.absent(),
           }) =>
               MovimentCompanion(
             id: id,
@@ -580,10 +588,10 @@ class $$MovimentTableTableManager extends RootTableManager<
             type: type,
             category: category,
             repeat: repeat,
-            repeatMoths: repeatMoths,
+            repeatMonths: repeatMonths,
             monthYearString: monthYearString,
             lastMonthYearString: lastMonthYearString,
-            lastMonth: lastMonth,
+            lastMonthYear: lastMonthYear,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -593,10 +601,10 @@ class $$MovimentTableTableManager extends RootTableManager<
             required bool type,
             required String category,
             required bool repeat,
-            required int repeatMoths,
+            required int repeatMonths,
             Value<String?> monthYearString = const Value.absent(),
             Value<String?> lastMonthYearString = const Value.absent(),
-            Value<DateTime?> lastMonth = const Value.absent(),
+            Value<DateTime?> lastMonthYear = const Value.absent(),
           }) =>
               MovimentCompanion.insert(
             id: id,
@@ -606,10 +614,10 @@ class $$MovimentTableTableManager extends RootTableManager<
             type: type,
             category: category,
             repeat: repeat,
-            repeatMoths: repeatMoths,
+            repeatMonths: repeatMonths,
             monthYearString: monthYearString,
             lastMonthYearString: lastMonthYearString,
-            lastMonth: lastMonth,
+            lastMonthYear: lastMonthYear,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
