@@ -10,10 +10,10 @@ class Moviment extends Table {
   BoolColumn get type => boolean()(); // se type == true é lucro se type != true é gasto
   TextColumn get category => text()();
   BoolColumn get repeat => boolean()();
-  IntColumn get repeatMoths => integer()();
+  IntColumn get repeatMonths => integer()();
   TextColumn get monthYearString => text().nullable()();
   TextColumn get lastMonthYearString => text().nullable()();
-  DateTimeColumn get lastMonth => dateTime().nullable()();
+  DateTimeColumn get lastMonthYear => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
