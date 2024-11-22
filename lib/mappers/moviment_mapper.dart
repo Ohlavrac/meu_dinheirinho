@@ -7,10 +7,11 @@ class MovimentMapper {
     return MovimentsDto(
       title: moviment.title, 
       amount: moviment.amount, 
-      type: moviment.type, 
+      type: moviment.type,
+      createdAt: moviment.createdAt,
       category: moviment.category, 
       repeat: moviment.repeat, 
-      repeatMonths: moviment.repeatMonths!, 
+      repeatMonths: moviment.repeatMonths, 
       monthYearString: moviment.monthYearString, 
       lastMonthYearString: moviment.lastMonthYearString
     );

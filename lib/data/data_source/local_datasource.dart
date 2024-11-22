@@ -18,10 +18,10 @@ class LocalDatasource implements ILocalDatasource {
       type: moviment.type,
       category: moviment.category,
       repeat: moviment.repeat,
-      repeatMonths: moviment.repeatMonths!,
+      repeatMonths: moviment.repeatMonths,
       monthYearString: moviment.monthYearString,
       lastMonthYearString: moviment.lastMonthYearString, 
-      lastMonthYear: moviment.LastMonthYear
+      lastMonthYear: moviment.lastMonthYear
     )).toList());
   }
   
@@ -34,11 +34,14 @@ class LocalDatasource implements ILocalDatasource {
       type: Value(moviment.type),
       category: Value(moviment.category),
       repeat: Value(moviment.repeat),
-      repeatMoths: Value(moviment.repeatMonths),
+      repeatMonths: Value(moviment.repeatMonths),
       monthYearString: Value(moviment.monthYearString),
       lastMonthYearString: Value(moviment.lastMonthYearString),
-      lastMonth: Value(moviment.lastMonthYear)
+      lastMonthYear: Value(moviment.lastMonthYear)
     );
+
+    print(">>>>>>>: ${moviment.createdAt}");
+    print(">><<>>: $movimentCompanion");
 
     await _myDb.into(_myDb.moviment).insert(movimentCompanion);
   }

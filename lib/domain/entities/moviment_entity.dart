@@ -6,10 +6,10 @@ class MovimentEntity {
   late bool type;
   late String category;
   late bool repeat;
-  int? repeatMonths;
+  late int repeatMonths;
   late String monthYearString;
   late String lastMonthYearString;
-  DateTime? LastMonthYear;
+  DateTime? lastMonthYear;
 
   MovimentEntity({
     this.id,
@@ -19,9 +19,9 @@ class MovimentEntity {
     required this.type,
     required this.category,
     required this.repeat,
-    this.repeatMonths,
+    required this.repeatMonths,
     required this.monthYearString,
     required this.lastMonthYearString,
-    this.LastMonthYear
+    this.lastMonthYear
   });
 }
