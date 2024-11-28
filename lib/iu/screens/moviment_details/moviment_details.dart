@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/db/database.dart';
+import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
 import 'package:drift/drift.dart' hide Column;
@@ -28,7 +29,7 @@ class _MovimentDetailsState extends State<MovimentDetails> {
           future: db.getMovimentById(movimentID),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              var item = snapshot.data as List<MovimentData>;
+              var item = snapshot.data as List<MovimentEntity>;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -50,7 +51,7 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                     child: Text("${item[0].amount} R\$", style: AppTexts.simple,),
                   ),
                   item[0].repeat == true ?
-                  Text("Este valor ira se repetir por ${item[0].repeatMoths} meses", style: AppTexts.simple,) :
+                  Text("Este valor ira se repetir por ${item[0]} meses", style: AppTexts.simple,) :
                   const Text(""),
                   const SizedBox(height: 10,),
                   Column(
@@ -67,9 +68,9 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                             type: Value(item[0].type),
                             category: Value(item[0].category),
                             repeat: const Value(false),
-                            repeatMoths: const Value(0),
+                            repeatMonths: const Value(0),
                             monthYearString: Value(item[0].monthYearString),
-                            lastMonth: Value(date),
+                            lastMonthYear: Value(date),
                             lastMonthYearString: Value(DateFormat("MMMM y").format(date))
                           );
                           db.stopMovementContinue(movimentData);

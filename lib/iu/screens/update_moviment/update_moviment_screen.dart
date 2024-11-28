@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/iu/widgets/text_field.dart';
 import 'package:meu_dinheirinho/iu/widgets/value_input.dart';
 
@@ -43,7 +44,7 @@ class _UpdateMovimentScreenState extends State<UpdateMovimentScreen> {
       future: db.getMovimentById(movimentID),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          var moviment = snapshot.data as List<MovimentData>;
+          var moviment = snapshot.data as List<MovimentEntity>;
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
             appBar: AppBar(backgroundColor: AppColors.backgroundColor, elevation: 0, iconTheme: IconThemeData(color: AppColors.textBlack),),
@@ -131,7 +132,7 @@ class _UpdateMovimentScreenState extends State<UpdateMovimentScreen> {
                     type: Value(moviment[0].type),
                     category: Value(_selectedItem==null ? moviment[0].category : _selectedItem!),
                     repeat: Value(repeat ?? moviment[0].repeat),
-                    repeatMoths: Value(months == 0 ? moviment[0].repeatMoths : months),
+                    repeatMonths: Value(months == 0 ? moviment[0].repeatMonths! : months),
                     monthYearString: Value(DateFormat("MMMM y").format(now)),
                   );
 
@@ -139,7 +140,7 @@ class _UpdateMovimentScreenState extends State<UpdateMovimentScreen> {
 
                   // se o mes e ano não existe no db então fazer um novo
                   print(">>>> ${DateFormat("MMMM y").format(now)}");
-                  dao.updateItem(movimentData);
+                  //dao.updateItem(movimentData);
                   Navigator.pop(context);
                 }, child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),

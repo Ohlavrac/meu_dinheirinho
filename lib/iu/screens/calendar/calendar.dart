@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/widgets/custom_divider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -61,7 +62,7 @@ class _CalendarState extends State<Calendar> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
                     if (snapshot.hasData) {
-                      var amounts = snapshot.data as List<MovimentData>;
+                      var amounts = snapshot.data as List<MovimentEntity>;
                                   
                       var total = walletAmount.getWalletAmountByMonthe(amounts, focusDayString);
                       var totalSpending = walletAmount.getWalletSpendingByMonth(amounts, focusDayString);
@@ -89,12 +90,12 @@ class _CalendarState extends State<Calendar> {
                 child: CustomDivider(),
               ),
               Expanded(
-                child: StreamBuilder<List<MovimentData>>(
+                child: StreamBuilder<List<MovimentEntity>>(
                   stream: db.getMovimentsByMonth(focusDayString, focusDay),
-                  builder: (context, AsyncSnapshot<List<MovimentData>> snapshot) {
+                  builder: (context, AsyncSnapshot<List<MovimentEntity>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
                       if (snapshot.hasData) {
-                        var items = snapshot.data as List<MovimentData>;
+                        var items = snapshot.data as List<MovimentEntity>;
 
                         return ListView.builder(
                           itemCount: items.length,

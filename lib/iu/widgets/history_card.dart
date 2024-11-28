@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/db/database.dart';
 import 'package:meu_dinheirinho/data/dtos/base_category_model.dart';
+import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 
 import '../colors/app_colors.dart';
 import '../texts/app_texts.dart';
 
 class HistoryCard extends StatelessWidget {
-  final MovimentData item;
+  final MovimentEntity item;
   final BaseCategoryModel icon;
 
   const HistoryCard({Key? key, required this.item, required this.icon}) : super(key: key);

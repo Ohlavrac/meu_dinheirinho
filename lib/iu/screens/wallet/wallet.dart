@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/data_source/data_source_base_category.dart';
 import 'package:meu_dinheirinho/data/db/database.dart';
+import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/domain/use_case/wallet_amount/wallet_amount.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
@@ -66,7 +67,7 @@ class _WalletState extends State<Wallet> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.active) {
                             if (snapshot.hasData) {
-                              var amounts = snapshot.data as List<MovimentData>;
+                              var amounts = snapshot.data as List<MovimentEntity>;
                               
                               var total = walletAmount.getWalletAmount(amounts);
 
@@ -108,12 +109,12 @@ class _WalletState extends State<Wallet> {
                 ),
                 const CustomDivider(),
                 Expanded(
-                  child: StreamBuilder<List<MovimentData>>(
+                  child: StreamBuilder<List<MovimentEntity>>(
                     stream: db.getMovimentsByMonth(monthAndYear, _date),
-                    builder: (context, AsyncSnapshot<List<MovimentData>> snapshot) {
+                    builder: (context, AsyncSnapshot<List<MovimentEntity>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.active) {
                         if (snapshot.hasData) {
-                          var items = snapshot.data as List<MovimentData>;
+                          var items = snapshot.data as List<MovimentEntity>;
                           return ListView.builder(
                             itemCount: items.length,
                             itemBuilder: (context, index) {
@@ -132,7 +133,7 @@ class _WalletState extends State<Wallet> {
                         return Center(child: Text("ERROR: ${snapshot.error}"),);
                       }
                       return const Center(child: CircularProgressIndicator());
-                    }, 
+                    },
                   ),
                 ),
               ],
