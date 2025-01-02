@@ -41,56 +41,6 @@ class Database extends _$Database {
       }
     );
   }
-
-  //Stream<List<MovimentEntity>> getMoviments() => select(moviment).watch();
-
-  Stream<List<MovimentEntity>> getMovimentsByMonth(String monthAndYear, DateTime monthAndYearDefault) {
-    print(monthAndYearDefault);
-    return (select(moviment)..where((tbl) => tbl.monthYearString.equals(monthAndYear) | tbl.repeat.equals(true) & tbl.lastMonthYear.isBiggerOrEqualValue(monthAndYearDefault) & tbl.createdAt.isSmallerOrEqualValue(monthAndYearDefault))).watch();
-  }
-
-  Future addMoviment(Insertable<MovimentEntity> movimentValue) => into(moviment).insert(movimentValue);
-
-  Stream<List<MovimentEntity>> getPositiveValues() {
-    var positive = (select(moviment)..where((tbl) => tbl.type.equals(true))).watch();
-
-    return positive;
-  }
-
-  Stream<List<MovimentEntity>> getNegativeValues() {
-    var negativeValue = (select(moviment)..where((tbl) => tbl.type.equals(false))).watch();
-
-    return negativeValue;
-  }
-
-  Stream<double?> getTotalAmount() {
-    var total = moviment.amount.sum();
-
-    final query = selectOnly(moviment)
-    ..addColumns([total]);
-
-    return query.map((row) => row.read(total)).watchSingle();
-  }
-
-  Future<List<MovimentEntity>> getMovimentById(int movimentID) {
-    return (select(moviment)..where((tbl) => tbl.id.equals(movimentID))).get();
-  }
-
-  Future reset() {
-    return delete(moviment).go();
-  }
-
-  Future deleteItem(int movimentID) async {
-    return await (delete(moviment)..where((tbl) => tbl.id.equals(movimentID))).go();
-  }
-
-  Future updateItem(Insertable<MovimentEntity> newmoviment) async {
-    return await update(moviment).replace(newmoviment);
-  }
-
-  Future stopMovementContinue(Insertable<MovimentEntity> updatemoviment) async {
-    return await update(moviment).replace(updatemoviment);
-  }
 }
 
   LazyDatabase _openConnection() {
