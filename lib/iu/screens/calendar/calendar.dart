@@ -3,11 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
 import 'package:meu_dinheirinho/iu/widgets/custom_divider.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../data/data_source/data_source_base_category.dart';
 import '../../../data/db/database.dart';
 import '../../../domain/use_case/wallet_amount/wallet_amount.dart';
+import '../../providers/moviment_provider.dart';
 import '../../texts/app_texts.dart';
 import '../../widgets/history_card.dart';
 
@@ -29,8 +31,9 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    Database db = Database();
-    String focusDayString = DateFormat("MMMM y").format(focusDay);
+    
+    var movimentProvider = Provider.of<MovimentProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: Padding(
@@ -58,15 +61,15 @@ class _CalendarState extends State<Calendar> {
                 ],
               ),
               StreamBuilder(
-                stream: db.getMovimentsByMonth(focusDayString, focusDay),
+                stream: movimentProvider.getMovimentsByMonth(monthAndYear, focusDay),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
                     if (snapshot.hasData) {
                       var amounts = snapshot.data as List<MovimentEntity>;
                                   
-                      var total = walletAmount.getWalletAmountByMonthe(amounts, focusDayString);
-                      var totalSpending = walletAmount.getWalletSpendingByMonth(amounts, focusDayString);
-                      var totalMovimentAmount = walletAmount.getWalletTotalAmountByMonth(amounts, focusDayString);
+                      var total = walletAmount.getWalletAmountByMonthe(amounts, monthAndYear);
+                      var totalSpending = walletAmount.getWalletSpendingByMonth(amounts, monthAndYear);
+                      var totalMovimentAmount = walletAmount.getWalletTotalAmountByMonth(amounts, monthAndYear);
     
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -91,7 +94,7 @@ class _CalendarState extends State<Calendar> {
               ),
               Expanded(
                 child: StreamBuilder<List<MovimentEntity>>(
-                  stream: db.getMovimentsByMonth(focusDayString, focusDay),
+                  stream: movimentProvider.getMovimentsByMonth(monthAndYear, focusDay),
                   builder: (context, AsyncSnapshot<List<MovimentEntity>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
                       if (snapshot.hasData) {

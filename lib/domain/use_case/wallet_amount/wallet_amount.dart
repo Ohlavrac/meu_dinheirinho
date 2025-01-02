@@ -1,7 +1,5 @@
 import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 
-import '../../../data/db/database.dart';
-
 class WalletAmount {
   double getWalletAmount(List<MovimentEntity> movimentsValues) {
     var total = 0.0;

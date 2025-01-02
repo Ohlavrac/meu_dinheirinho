@@ -14,7 +14,8 @@ class Settings extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               final dao = Database();
-              dao.reset();
+              //TODO: FIX THIS
+              //dao.reset();
             },
             child: Text("APAGAR TUDO"),
           ),

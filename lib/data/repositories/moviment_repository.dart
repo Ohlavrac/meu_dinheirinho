@@ -31,5 +31,19 @@ class MovimentRepository implements IMovimentRepository {
       lastMonthYear: moviment.lastMonthYear
     )).toList());
   }
+  
+  @override
+  Stream<List<MovimentEntity>> getMovimentsByMonth(String monthAndYear, DateTime monthAndYearDefault) async* {
+    Stream<List<MovimentsDto>> movimentsDto = local.getMovimentsByMonth(monthAndYear, monthAndYearDefault);
+
+    yield* MovimentMapper.dtoStreamToEntityStream(movimentsDto);
+  }
+  
+  @override
+  Future<MovimentEntity> getMovimentById(int movimentID) async {
+    MovimentsDto movimentDto = await local.getMovimentById(movimentID);
+
+    return MovimentMapper.toEntity(movimentDto);
+  }
 
 }

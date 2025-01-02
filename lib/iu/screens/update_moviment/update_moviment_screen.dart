@@ -2,8 +2,10 @@ import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
+import 'package:meu_dinheirinho/iu/providers/moviment_provider.dart';
 import 'package:meu_dinheirinho/iu/widgets/text_field.dart';
 import 'package:meu_dinheirinho/iu/widgets/value_input.dart';
+import 'package:provider/provider.dart';
 
 import '../../../data/data_source/data_source_base_category.dart';
 import '../../../data/db/database.dart';
@@ -38,10 +40,12 @@ class _UpdateMovimentScreenState extends State<UpdateMovimentScreen> {
     var items = baseCategoryData.getKeys();
     var isLucro = false;
     var movimentID = ModalRoute.of(context)!.settings.arguments as int;
+    var movimentProvider = Provider.of<MovimentProvider>(context);
     Database db = Database();
 
     return FutureBuilder(
-      future: db.getMovimentById(movimentID),
+      //TODO: FIX THIS
+      future: movimentProvider.getMovimentById(movimentID),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var moviment = snapshot.data as List<MovimentEntity>;

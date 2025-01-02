@@ -9,6 +9,9 @@ import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
 import 'package:meu_dinheirinho/iu/widgets/custom_divider.dart';
 import 'package:meu_dinheirinho/iu/widgets/history_card.dart';
 import 'package:meu_dinheirinho/iu/widgets/square_card_button.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/moviment_provider.dart';
 
 class Wallet extends StatefulWidget {
   const Wallet({Key? key}) : super(key: key);
@@ -26,7 +29,9 @@ class _WalletState extends State<Wallet> {
 
   @override
   Widget build(BuildContext context) {
-    Database db = Database();
+    //Database db = Database();
+    var movimentProvider = Provider.of<MovimentProvider>(context);
+    
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: Padding(
@@ -63,7 +68,7 @@ class _WalletState extends State<Wallet> {
                         child: Text(DateFormat("d 'de' MMMM 'de' y").format(_date), style: AppTexts.subtitle,),
                       ),
                       StreamBuilder(
-                        stream: db.getMovimentsByMonth(monthAndYear, _date),
+                        stream: movimentProvider.getMovimentsByMonth(monthAndYear, _date),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.active) {
                             if (snapshot.hasData) {
@@ -110,7 +115,7 @@ class _WalletState extends State<Wallet> {
                 const CustomDivider(),
                 Expanded(
                   child: StreamBuilder<List<MovimentEntity>>(
-                    stream: db.getMovimentsByMonth(monthAndYear, _date),
+                    stream: movimentProvider.getMovimentsByMonth(monthAndYear, _date),
                     builder: (context, AsyncSnapshot<List<MovimentEntity>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.active) {
                         if (snapshot.hasData) {

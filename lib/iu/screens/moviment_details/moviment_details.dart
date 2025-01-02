@@ -3,8 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/db/database.dart';
 import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
+import 'package:meu_dinheirinho/iu/providers/moviment_provider.dart';
 import 'package:meu_dinheirinho/iu/texts/app_texts.dart';
 import 'package:drift/drift.dart' hide Column;
+import 'package:provider/provider.dart';
 
 class MovimentDetails extends StatefulWidget {
   const MovimentDetails({Key? key}) : super(key: key);
@@ -20,13 +22,16 @@ class _MovimentDetailsState extends State<MovimentDetails> {
     Database db = Database();
     DateTime date = DateTime.now();
 
+    var movimentProvider = Provider.of<MovimentProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(backgroundColor: AppColors.backgroundColor, elevation: 0, iconTheme: IconThemeData(color: AppColors.textBlack),),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: FutureBuilder(
-          future: db.getMovimentById(movimentID),
+          //TODO: FIX THIS
+          future: movimentProvider.getMovimentById(movimentID),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var item = snapshot.data as List<MovimentEntity>;
@@ -73,7 +78,8 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                             lastMonthYear: Value(date),
                             lastMonthYearString: Value(DateFormat("MMMM y").format(date))
                           );
-                          db.stopMovementContinue(movimentData);
+                          //TODO: FIX THIS
+                          //db.stopMovementContinue(movimentData);
                           Navigator.pop(context);
                         },
                         label: Text("Parar de repetir", style: AppTexts.subtitle,),
@@ -87,7 +93,8 @@ class _MovimentDetailsState extends State<MovimentDetails> {
                       ElevatedButton.icon(
                         icon: const Icon(Icons.delete),
                         onPressed: () {
-                          db.deleteItem(movimentID);
+                          //TODO: FIX THIS
+                          //db.deleteItem(movimentID);
                           Navigator.pop(context);
                         },
                         label: Text("Deletar", style: AppTexts.subtitle,),
