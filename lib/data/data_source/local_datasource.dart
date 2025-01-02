@@ -82,7 +82,7 @@ class LocalDatasource implements ILocalDatasource {
   }
   
   @override
-  Stream<double?> getTotalAmount() async* {
+  Stream<double?> getTotalAmountInWallet() async* {
     // TODO: implement getTotalAmount
     throw UnimplementedError();
   }

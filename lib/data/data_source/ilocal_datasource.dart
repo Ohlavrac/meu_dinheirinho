@@ -8,7 +8,7 @@ abstract class ILocalDatasource {
     Stream<List<MovimentsDto>> getMovimentsByMonth(String monthAndYear, DateTime monthAndYearDefault);
     Stream<List<MovimentsDto>> getPositiveValues();
     Stream<List<MovimentsDto>> getNegativeValues();
-    Stream<double?> getTotalAmount();
+    Stream<double?> getTotalAmountInWallet();
     Future<MovimentsDto> getMovimentById(int movimentID);
     Future deleteItem(int movimentID);
     Future updateItem(Insertable<MovimentsDto> newmoviment);
