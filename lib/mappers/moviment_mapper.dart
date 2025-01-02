@@ -17,8 +17,37 @@ class MovimentMapper {
     );
   }
 
+  static MovimentEntity toEntity(MovimentsDto moviment) {
+    return MovimentEntity(
+      title: moviment.title, 
+      amount: moviment.amount, 
+      type: moviment.type,
+      createdAt: moviment.createdAt,
+      category: moviment.category, 
+      repeat: moviment.repeat, 
+      repeatMonths: moviment.repeatMonths, 
+      monthYearString: moviment.monthYearString, 
+      lastMonthYearString: moviment.lastMonthYearString
+    );
+  }
+
   static Stream<List<MovimentsDto>> entiyStreamToDtoStream (Stream<List<MovimentEntity>> movimentsEntity) {
     return movimentsEntity.map((movimentsEntity) => movimentsEntity.map((moviment) => MovimentsDto(
+      title: moviment.title,
+      amount: moviment.amount,
+      createdAt: moviment.createdAt,
+      type: moviment.type,
+      category: moviment.category,
+      repeat: moviment.repeat,
+      repeatMonths: moviment.repeatMonths,
+      monthYearString: moviment.monthYearString,
+      lastMonthYearString: moviment.lastMonthYearString, 
+      lastMonthYear: moviment.lastMonthYear
+    )).toList());
+  }
+
+  static Stream<List<MovimentEntity>> dtoStreamToEntityStream (Stream<List<MovimentsDto>> movimentsDto) {
+    return movimentsDto.map((movimentsEntity) => movimentsEntity.map((moviment) => MovimentEntity(
       title: moviment.title,
       amount: moviment.amount,
       createdAt: moviment.createdAt,
