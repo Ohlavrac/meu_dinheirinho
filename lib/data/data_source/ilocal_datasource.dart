@@ -3,7 +3,7 @@ import 'package:drift/drift.dart';
 import '../dtos/moviments_dto.dart';
 
 abstract class ILocalDatasource {
-    Future<void> addMoviment(MovimentsDto moviment);
+    Future<bool> addMoviment(MovimentsDto moviment);
     Stream<List<MovimentsDto>> getMoviments();
     Stream<List<MovimentsDto>> getMovimentsByMonth(String monthAndYear, DateTime monthAndYearDefault);
     Stream<List<MovimentsDto>> getPositiveValues();

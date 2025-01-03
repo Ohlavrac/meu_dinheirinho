@@ -27,7 +27,7 @@ class LocalDatasource implements ILocalDatasource {
   }
   
   @override
-  Future<void> addMoviment(MovimentsDto moviment) async {
+  Future<bool> addMoviment(MovimentsDto moviment) async {
     MovimentCompanion movimentCompanion = MovimentCompanion(
       title: Value(moviment.title),
       amount: Value(moviment.amount),
@@ -41,7 +41,13 @@ class LocalDatasource implements ILocalDatasource {
       lastMonthYear: Value(moviment.lastMonthYear)
     );
 
-    await _myDb.into(_myDb.moviment).insert(movimentCompanion);
+    int id = await _myDb.into(_myDb.moviment).insert(movimentCompanion);
+
+    if (id!=0) {
+      return true;
+    } else {
+      return false;
+    }
   }
   
   @override

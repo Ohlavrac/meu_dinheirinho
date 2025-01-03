@@ -10,7 +10,7 @@ class MovimentRepository implements IMovimentRepository {
   MovimentRepository({required this.local});
 
   @override
-  Future<void> addMoviment(MovimentEntity moviment) async {
+  Future<bool> addMoviment(MovimentEntity moviment) async {
     return await local.addMoviment(MovimentMapper.toDto(moviment));
   }
 

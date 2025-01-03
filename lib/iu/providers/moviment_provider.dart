@@ -18,9 +18,8 @@ class MovimentProvider extends ChangeNotifier {
     required this.getMovimentByIdUsecase,
   });
 
-  Future<void> createNewMoviment(MovimentEntity moviment) async {
-    await createMovimentUsecase.createNewMoviment(moviment);
-    notifyListeners();
+  Future<bool> createNewMoviment(MovimentEntity moviment) async {
+    return await createMovimentUsecase.createNewMoviment(moviment);
   }
 
   Stream<List<MovimentEntity>> getMoviments() async* {
