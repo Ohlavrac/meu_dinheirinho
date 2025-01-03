@@ -30,8 +30,8 @@ class _AddWalletMovimentState extends State<AddWalletMoviment> {
   String price = "";
 
   @override
-  DataSourceBaseCategory baseCategoryData = DataSourceBaseCategory();
   Widget build(BuildContext context) {
+    DataSourceBaseCategory baseCategoryData = DataSourceBaseCategory();
     var items = baseCategoryData.getKeys();
     var isLucro = ModalRoute.of(context)!.settings.arguments as bool?;
 

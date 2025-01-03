@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:meu_dinheirinho/data/db/database.dart';
 import 'package:meu_dinheirinho/data/dtos/base_category_model.dart';
 import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 

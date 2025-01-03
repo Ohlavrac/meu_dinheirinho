@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../colors/app_colors.dart';
 import '../texts/app_texts.dart';
 
 class SquareCardButton extends StatelessWidget {

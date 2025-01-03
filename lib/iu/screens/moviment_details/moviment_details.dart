@@ -19,7 +19,6 @@ class _MovimentDetailsState extends State<MovimentDetails> {
   @override
   Widget build(BuildContext context) {
     var movimentID = ModalRoute.of(context)!.settings.arguments as int;
-    Database db = Database();
     DateTime date = DateTime.now();
 
     var movimentProvider = Provider.of<MovimentProvider>(context);

@@ -38,10 +38,8 @@ class _UpdateMovimentScreenState extends State<UpdateMovimentScreen> {
   @override
   Widget build(BuildContext context) {
     var items = baseCategoryData.getKeys();
-    var isLucro = false;
     var movimentID = ModalRoute.of(context)!.settings.arguments as int;
     var movimentProvider = Provider.of<MovimentProvider>(context);
-    Database db = Database();
 
     return FutureBuilder(
       //TODO: FIX THIS
@@ -126,7 +124,6 @@ class _UpdateMovimentScreenState extends State<UpdateMovimentScreen> {
                   var formatPriceString = price?.replaceRange(0, 2, "");
                   var formatPricestring2 = formatPriceString?.replaceAll(",", "");
                   var priceConverted = double.parse(formatPricestring2!);
-                  final dao = Database();
                   
                   final movimentData = MovimentCompanion(
                     id: Value(movimentID),

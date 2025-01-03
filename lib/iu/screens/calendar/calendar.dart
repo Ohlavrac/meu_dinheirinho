@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../data/data_source/data_source_base_category.dart';
-import '../../../data/db/database.dart';
 import '../../../domain/use_case/wallet_amount/wallet_amount.dart';
 import '../../providers/moviment_provider.dart';
 import '../../texts/app_texts.dart';

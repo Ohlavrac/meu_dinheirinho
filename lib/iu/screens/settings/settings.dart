@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/db/database.dart';
-
 class Settings extends StatelessWidget {
   const Settings({Key? key}) : super(key: key);
 
@@ -13,11 +11,11 @@ class Settings extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
-              final dao = Database();
               //TODO: FIX THIS
+              //TODO: CREATE A FUNC TO CLEAR DATABASE
               //dao.reset();
             },
-            child: Text("APAGAR TUDO"),
+            child: const Text("APAGAR TUDO"),
           ),
         ],
       ),

@@ -6,8 +6,6 @@ import 'package:meu_dinheirinho/iu/widgets/custom_divider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/data_source/data_source_base_category.dart';
-import '../../../data/db/database.dart';
-import '../../colors/app_colors.dart';
 import '../../widgets/history_card.dart';
 
 class History extends StatefulWidget {
@@ -23,7 +21,6 @@ class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     var movimentProvider = Provider.of<MovimentProvider>(context);
-    Database db = Database();
     return SafeArea(child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Column(
@@ -37,7 +34,7 @@ class _HistoryState extends State<History> {
             child: StreamBuilder<List<MovimentEntity>>(
                             stream: movimentProvider.getMoviments(),
                             builder: (context, AsyncSnapshot<List<MovimentEntity>> snapshot) {
-
+                              //TODO: FIX AND FINISH
                               if (snapshot.hasError) {
                                 return Text("> ${snapshot.error}");
                               } else {

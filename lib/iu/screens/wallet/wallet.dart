@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/data/data_source/data_source_base_category.dart';
-import 'package:meu_dinheirinho/data/db/database.dart';
 import 'package:meu_dinheirinho/domain/entities/moviment_entity.dart';
 import 'package:meu_dinheirinho/domain/use_case/wallet_amount/wallet_amount.dart';
 import 'package:meu_dinheirinho/iu/colors/app_colors.dart';
