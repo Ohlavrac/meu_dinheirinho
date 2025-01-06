@@ -9,17 +9,18 @@ import 'package:meu_dinheirinho/domain/repository/imoviment_repository.dart';
 import 'package:meu_dinheirinho/domain/use_case/create_moviment_usecase.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockRepoTest extends Mock implements MovimentRepository {}
+class MockRepoTest extends Mock implements IMovimentRepository {}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   late Database database;
-  LocalDatasource local = LocalDatasource();
-  late MovimentRepository repository;
+  late CreateMovimentUsecase createMovimentUsecase;
+  late MockRepoTest repository;
 
-  setUp(() {
+  setUpAll(() {
     database = Database();
     repository = MockRepoTest();
+    createMovimentUsecase = CreateMovimentUsecase(repository: repository);
   });
 
   tearDown(() async {
@@ -29,24 +30,35 @@ void main() {
   test("SHOULD RETURN NULL WHEN ALL FIELDS OF MOVIMENT IS EMPTY", () async {
     MovimentEntity moviment = MovimentEntity(
       title: "", 
-      amount: 10, 
+      amount: 0, 
       type: false, 
-      category:  "Pagamento", 
+      category:  "", 
       repeat: false, 
       repeatMonths: 0, 
       monthYearString: "", 
       lastMonthYearString: ""
     );
 
-    CreateMovimentUsecase createMovimentUsecase = CreateMovimentUsecase(repository: repository);
-
     when(() => repository.addMoviment(moviment)).thenAnswer((_) async => false);
     bool result = await createMovimentUsecase.createNewMoviment(moviment);
     expect(result, false);
   });
 
-  test("SHOULD RETURN NULL WHEN MOVIMENT TITLE IS EMPTY", () async {
+  test("SHOULD RETURN FALSE WHEN MOVIMENT TITLE IS EMPTY", () async {
+    MovimentEntity moviment2 = MovimentEntity(
+      title: "",
+      amount: 1.0,
+      createdAt: DateTime.now(),
+      type: true,
+      category: "Outros",
+      repeat: false,
+      repeatMonths: 0,
+      monthYearString: "",
+      lastMonthYearString: ""
+    );
 
+    bool result = await createMovimentUsecase.createNewMoviment(moviment2);
+    expect(result, false);
   });
 
   test("SHOULD RETURN NULL WHEN MOVIMENT VALUE(AMOUNT) IS EMPTY", () async {
