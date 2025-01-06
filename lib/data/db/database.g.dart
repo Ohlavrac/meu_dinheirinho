@@ -63,8 +63,8 @@ class $MovimentTable extends Moviment
       const VerificationMeta('repeatMonths');
   @override
   late final GeneratedColumn<int> repeatMonths = GeneratedColumn<int>(
-      'repeat_months', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'repeat_months', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _monthYearStringMeta =
       const VerificationMeta('monthYearString');
   @override
@@ -149,8 +149,6 @@ class $MovimentTable extends Moviment
           _repeatMonthsMeta,
           repeatMonths.isAcceptableOrUnknown(
               data['repeat_months']!, _repeatMonthsMeta));
-    } else if (isInserting) {
-      context.missing(_repeatMonthsMeta);
     }
     if (data.containsKey('month_year_string')) {
       context.handle(
@@ -219,7 +217,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
   final Value<bool> type;
   final Value<String> category;
   final Value<bool> repeat;
-  final Value<int> repeatMonths;
+  final Value<int?> repeatMonths;
   final Value<String?> monthYearString;
   final Value<String?> lastMonthYearString;
   final Value<DateTime?> lastMonthYear;
@@ -244,7 +242,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
     required bool type,
     required String category,
     required bool repeat,
-    required int repeatMonths,
+    this.repeatMonths = const Value.absent(),
     this.monthYearString = const Value.absent(),
     this.lastMonthYearString = const Value.absent(),
     this.lastMonthYear = const Value.absent(),
@@ -252,8 +250,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
         amount = Value(amount),
         type = Value(type),
         category = Value(category),
-        repeat = Value(repeat),
-        repeatMonths = Value(repeatMonths);
+        repeat = Value(repeat);
   static Insertable<MovimentEntity> custom({
     Expression<int>? id,
     Expression<String>? title,
@@ -291,7 +288,7 @@ class MovimentCompanion extends UpdateCompanion<MovimentEntity> {
       Value<bool>? type,
       Value<String>? category,
       Value<bool>? repeat,
-      Value<int>? repeatMonths,
+      Value<int?>? repeatMonths,
       Value<String?>? monthYearString,
       Value<String?>? lastMonthYearString,
       Value<DateTime?>? lastMonthYear}) {
@@ -388,7 +385,7 @@ typedef $$MovimentTableCreateCompanionBuilder = MovimentCompanion Function({
   required bool type,
   required String category,
   required bool repeat,
-  required int repeatMonths,
+  Value<int?> repeatMonths,
   Value<String?> monthYearString,
   Value<String?> lastMonthYearString,
   Value<DateTime?> lastMonthYear,
@@ -401,7 +398,7 @@ typedef $$MovimentTableUpdateCompanionBuilder = MovimentCompanion Function({
   Value<bool> type,
   Value<String> category,
   Value<bool> repeat,
-  Value<int> repeatMonths,
+  Value<int?> repeatMonths,
   Value<String?> monthYearString,
   Value<String?> lastMonthYearString,
   Value<DateTime?> lastMonthYear,
@@ -575,7 +572,7 @@ class $$MovimentTableTableManager extends RootTableManager<
             Value<bool> type = const Value.absent(),
             Value<String> category = const Value.absent(),
             Value<bool> repeat = const Value.absent(),
-            Value<int> repeatMonths = const Value.absent(),
+            Value<int?> repeatMonths = const Value.absent(),
             Value<String?> monthYearString = const Value.absent(),
             Value<String?> lastMonthYearString = const Value.absent(),
             Value<DateTime?> lastMonthYear = const Value.absent(),
@@ -601,7 +598,7 @@ class $$MovimentTableTableManager extends RootTableManager<
             required bool type,
             required String category,
             required bool repeat,
-            required int repeatMonths,
+            Value<int?> repeatMonths = const Value.absent(),
             Value<String?> monthYearString = const Value.absent(),
             Value<String?> lastMonthYearString = const Value.absent(),
             Value<DateTime?> lastMonthYear = const Value.absent(),
