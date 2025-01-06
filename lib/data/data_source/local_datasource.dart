@@ -41,13 +41,9 @@ class LocalDatasource implements ILocalDatasource {
       lastMonthYear: Value(moviment.lastMonthYear)
     );
 
-    int id = await _myDb.into(_myDb.moviment).insert(movimentCompanion);
+    await _myDb.into(_myDb.moviment).insert(movimentCompanion);
 
-    if (id!=0) {
-      return true;
-    } else {
-      return false;
-    }
+    return true;
   }
   
   @override
