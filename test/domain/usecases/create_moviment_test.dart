@@ -25,12 +25,43 @@ void main() {
   tearDown(() async {
     await database.close();
   });
+
+  test("SHOULD RETURN NULL WHEN ALL FIELDS OF MOVIMENT IS EMPTY", () async {
+    MovimentEntity moviment = MovimentEntity(
+      title: "", 
+      amount: 10, 
+      type: false, 
+      category:  "Pagamento", 
+      repeat: false, 
+      repeatMonths: 0, 
+      monthYearString: "", 
+      lastMonthYearString: ""
+    );
+
+    CreateMovimentUsecase createMovimentUsecase = CreateMovimentUsecase(repository: repository);
+
+    when(() => repository.addMoviment(moviment)).thenAnswer((_) async => false);
+    bool result = await createMovimentUsecase.createNewMoviment(moviment);
+    expect(result, false);
+  });
+
+  test("SHOULD RETURN NULL WHEN MOVIMENT TITLE IS EMPTY", () async {
+
+  });
+
+  test("SHOULD RETURN NULL WHEN MOVIMENT VALUE(AMOUNT) IS EMPTY", () async {
+
+  });
+
+  test("SHOULD RETURN DEFAULT CATEGORY WHEN USER DONT SELECT A CATEGORY FOR THE MOVIMENT", () async {
+    
+  });
   
   test("SHOULD CREATE A NEW EXPANSE MOVIMENT WHIT OUT REPEAT", () async {
     MovimentEntity moviment = MovimentEntity(
       title: "teste", 
       amount: 10, 
-      type: true, 
+      type: false, 
       category:  "Pagamento", 
       repeat: false, 
       repeatMonths: 0, 
