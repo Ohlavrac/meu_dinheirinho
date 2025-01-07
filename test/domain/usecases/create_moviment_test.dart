@@ -61,8 +61,21 @@ void main() {
     expect(result, false);
   });
 
-  test("SHOULD RETURN NULL WHEN MOVIMENT VALUE(AMOUNT) IS EMPTY", () async {
+  test("SHOULD RETURN FALSE WHEN MOVIMENT VALUE(AMOUNT) IS ZERO", () async {
+    MovimentEntity moviment = MovimentEntity(
+      title: "Teste",
+      amount: 0,
+      createdAt: DateTime.now(),
+      type: true,
+      category: "Outros",
+      repeat: false,
+      repeatMonths: 0,
+      monthYearString: "",
+      lastMonthYearString: ""
+    );
 
+    bool result = await createMovimentUsecase.createNewMoviment(moviment);
+    expect(result, false);
   });
 
   test("SHOULD RETURN DEFAULT CATEGORY WHEN USER DONT SELECT A CATEGORY FOR THE MOVIMENT", () async {
