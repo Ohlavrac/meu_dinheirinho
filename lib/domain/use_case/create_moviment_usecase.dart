@@ -7,7 +7,7 @@ class CreateMovimentUsecase {
   CreateMovimentUsecase({required this.repository});
 
   Future<bool> createNewMoviment(MovimentEntity moviment) async {
-    if (moviment.title.isEmpty) {
+    if (moviment.title.isEmpty || moviment.amount <= 0) {
       return false;
     }
 
