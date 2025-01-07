@@ -78,6 +78,41 @@ void main() {
     expect(result, false);
   });
 
+  test("SHOULD RETURN FALSE WHEN MOVIMENT VALUE(AMOUNT) IS LESS THAN ZERO", () async {
+    MovimentEntity moviment = MovimentEntity(
+      title: "Teste",
+      amount: -1,
+      createdAt: DateTime.now(),
+      type: true,
+      category: "Outros",
+      repeat: false,
+      repeatMonths: 0,
+      monthYearString: "",
+      lastMonthYearString: ""
+    );
+
+    bool result = await createMovimentUsecase.createNewMoviment(moviment);
+    expect(result, false);
+  });
+
+  test("SHOULD RETURN TRUE WHEN MOVIMENT VALUE(AMOUNT) IS GREATHER THAN ZERO", () async {
+    MovimentEntity moviment = MovimentEntity(
+      title: "Teste",
+      amount: 10,
+      createdAt: DateTime.now(),
+      type: true,
+      category: "Outros",
+      repeat: false,
+      repeatMonths: 0,
+      monthYearString: "",
+      lastMonthYearString: ""
+    );
+
+    when(() => repository.addMoviment(moviment)).thenAnswer((_) async => true);
+    bool result = await createMovimentUsecase.createNewMoviment(moviment);
+    expect(result, true);
+  });
+
   test("SHOULD RETURN DEFAULT CATEGORY WHEN USER DONT SELECT A CATEGORY FOR THE MOVIMENT", () async {
     
   });

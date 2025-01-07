@@ -11,7 +11,8 @@ class MovimentRepository implements IMovimentRepository {
 
   @override
   Future<bool> addMoviment(MovimentEntity moviment) async {
-    return await local.addMoviment(MovimentMapper.toDto(moviment));
+    final result = await local.addMoviment(MovimentMapper.toDto(moviment));
+    return result;
   }
 
   @override
